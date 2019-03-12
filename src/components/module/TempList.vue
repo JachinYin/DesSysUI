@@ -95,9 +95,14 @@
           url: thiz.preUrl + "getTemplateList",
           type: 'get',
           dataType: 'json',
-          success:function (data) {
-            thiz.templateList = data;
-            thiz.page.total = data.length;
+          success:function (res) {
+            if(res.success){
+              let data = res.other;
+              thiz.templateList = data.list;
+              thiz.page.total = thiz.templateList.length;
+            }else{
+              thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
+            }
           },
           error: function (data) {
             // thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
@@ -130,8 +135,8 @@
     color: #909399;
     border-radius: 6px;
 
-    height: 420px;
     width: 400px;
+    height: 460px;
     z-index: 1000;
 
     padding-top: 1px;
@@ -167,7 +172,7 @@
     padding-right: 10px;
     display: inline-block;
     text-align: right;
-    height: 45px;
+    height: 55px;
   }
   .body .input_line input{
     width: 250px;
