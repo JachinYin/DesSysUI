@@ -9,7 +9,7 @@
           <div class="right">
             <div class="tempData">
               <div class="item">
-                <span class="keyClass">标题：</span> <span class="valClass" style="font-weight: bold">{{tempData.title}}</span>
+                <span class="keyClass">标题：</span> <span class="valClass" >{{tempData.title}}</span>
               </div>
               <div class="item">
                 <span class="keyClass">状态：</span>
