@@ -15,6 +15,8 @@ Vue.config.productionTip = false;
 
 // 定义VUE全局变量
 Vue.prototype.preUrl = "http://localhost:8088/";
+Vue.prototype.reg_Price = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+
 // 定义JS全局变量
 
 /* eslint-disable no-new */

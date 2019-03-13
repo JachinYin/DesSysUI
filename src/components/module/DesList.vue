@@ -13,7 +13,7 @@
         <el-table-column align="center" label="审核状态" prop="status" width="200px"></el-table-column>
         <el-table-column align="center" label="操作" width="149px">
           <template slot-scope="scope">
-            <span @click="showInfo(scope.$index)" class="showDetail">查看</span>
+            <span @click="showInfo(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -24,19 +24,19 @@
 
 <script>
   import Pagination from "@/components/util/Pagination";
-  import {Pagination_Mixins} from "../../assets/mixins";
+  import {Pagination_Mixins2} from "../../assets/mixins";
 
   export default {
     name: "DesList",
     components: {Pagination},
-    mixins:[Pagination_Mixins],
+    mixins:[Pagination_Mixins2],
     data: function() {
       return {
         dataList: [],
       }
     },
     methods: {
-      showInfo: function () {
+      showDetail: function () {
 
       },
     },

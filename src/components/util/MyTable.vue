@@ -27,7 +27,7 @@
       },
       // 方法
       methods:{
-        showInfo: function (index) {
+        showDetail: function (index) {
           console.log(index);
         },
       },

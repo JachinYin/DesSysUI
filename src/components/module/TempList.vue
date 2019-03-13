@@ -5,17 +5,23 @@
       <span class="static">统计数据</span>
     </div>
     <div class="table">
-      <el-table :data="templateList.slice(index, size)" border :height="609" tooltip-effect="light">
+      <el-table :data="templateList.slice(index, size)" border :height="609" tooltip-effect="light"  v-loading="isLoad">
         <el-table-column align="center" label="模板ID" prop="tempId" width="125px"></el-table-column>
-        <el-table-column align="center" label="模板标题" prop="name" width="245px"
+        <el-table-column align="center" label="模板标题" prop="title" width="245px"
                          show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="设计师" prop="designer" width="150px"></el-table-column>
         <el-table-column align="center" label="审核时间" prop="time" width="200px"></el-table-column>
-        <el-table-column align="center" label="审核状态" prop="status" width="125px"></el-table-column>
+        <el-table-column align="center" label="审核状态" prop="status" width="125px">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 1">审核中</span>
+            <span v-if="scope.row.status === 2" style="color: #9cd078;">通过</span>
+            <span v-if="scope.row.status === 3" style="color: #fd2814;">打回</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="采购价" prop="price" width="125px"></el-table-column>
         <el-table-column align="center" label="操作" width="125px">
           <template slot-scope="scope">
-            <span @click="showInfo(scope.$index)" class="showDetail">查看</span>
+            <span @click="showDetail(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -31,7 +37,8 @@
       >
       </el-pagination>
     </div>
-    <div class="filter-box " v-if="isFilterVisible" v-cloak>
+    <ShowDetail :is-visible="isDetailVisible" :temp-data="tempData" @closeDetailBox="closeDetailBox"/>
+    <div class="filter_temp openHtml" v-if="isFilterVisible" v-cloak>
       <div class="body">
             <span class="title">
                 <span style="color:#2b89fb;">▌</span> 筛选条件
@@ -65,17 +72,21 @@
 </template>
 
 <script>
-  import {Pagination_Mixins2} from "@/assets/mixins";
+  import {Comm_Mixins,Pagination_Mixins2} from "@/assets/mixins";
+  import ShowDetail from "@/components/openvue/ShowTempDetail";
 
   export default {
     name: "TempList",
+    components: {ShowDetail},
     data(){
       return{
         isFilterVisible: false,
+        isDetailVisible: false,
         templateList: [],
+        tempData: {},
       }
     },
-    mixins: [Pagination_Mixins2],
+    mixins: [Comm_Mixins, Pagination_Mixins2],
     methods:{
       showFilter: function () {
         this.isFilterVisible = true;
@@ -86,8 +97,30 @@
       onFilter: function () {
         this.isFilterVisible = !this.isFilterVisible;
       },
-      showInfo: function (index) {
+      showDetail: function (index) {
         console.log(index);
+        let thiz = this;
+        let tempId = thiz.templateList[index].tempId;
+        $.ajax({
+          url: thiz.preUrl + "getTempById",
+          data: {
+            tempId: tempId,
+          },
+          type: 'get',
+          dataType: 'json',
+          success: function (res) {
+            console.log(res);
+            thiz.tempData = res.other;
+            thiz.isDetailVisible = true;
+          },
+          error:function (res) {
+            console.log(res);
+          }
+        });
+
+      },
+      closeDetailBox: function(){
+        this.isDetailVisible = false;
       },
       refreshTabData: function () {
         let thiz = this;
@@ -98,8 +131,12 @@
           success:function (res) {
             if(res.success){
               let data = res.other;
+
+              data.list = format(data.list);
+
               thiz.templateList = data.list;
               thiz.page.total = thiz.templateList.length;
+              thiz.isLoad = false;
             }else{
               thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
             }
@@ -108,40 +145,26 @@
             // thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
           }
         });
-      }
+      },
     },
     created() {
       this.refreshTabData();
     }
   }
+  function format (list) {
+    for(let i in list){
+      list[i].time = renderTime(list[i].time);
+    }
+    return list;
+  }
+  function renderTime(date) {
+    var dateee = new Date(date).toJSON();
+    return new Date(+new Date(dateee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+  }
+
 </script>
 
 <style scoped>
-  /*filter */
-  .filter-box{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .body{
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    position: relative;
-    top: 12%;
-    margin: auto;
-    text-align: center;
-    background: white;
-    color: #909399;
-    border-radius: 6px;
-
-    width: 400px;
-    height: 460px;
-    z-index: 1000;
-
-    padding-top: 1px;
-  }
-
   .body .title{
     display: block;
     text-align: left;

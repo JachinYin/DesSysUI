@@ -1,0 +1,219 @@
+<template>
+    <div class="showDetail openHtml" v-if="isVisible">
+      <div class="body">
+        <div class="container">
+          <div class="left">
+            <img src="" alt="">
+            <span>图片区域</span>
+          </div>
+          <div class="right">
+            <div class="tempData">
+              <div class="item">
+                <span class="keyClass">标题：</span> <span class="valClass" style="font-weight: bold">{{tempData.title}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">状态：</span>
+                <span class="valClass">
+                  <span class="status1" v-if="tempData.status === 1">审核中</span>
+                  <span class="status2" v-else-if="tempData.status === 2">通过</span>
+                  <span class="status3" v-else>打回</span>
+                </span>
+              </div>
+              <div class="item">
+                <span class="keyClass">采购价：</span> <span class="valClass">{{tempData.price}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">关键词：</span> <span class="valClass">{{tempData.keyWd}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">行业信息：</span> <span class="valClass">{{tempData.info}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">AID：</span> <span class="valClass">{{tempData.aid}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">昵称：</span> <span class="valClass">{{tempData.designer}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">姓名：</span> <span class="valClass">{{tempData.realName}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass">手机：</span> <span class="valClass">{{tempData.phone}}</span>
+              </div>
+              <div class="item">
+                <span class="keyClass" style="width: 100px">审核记录表：</span><span>↓</span>
+              </div>
+            </div>
+            <div class="tempAuditList">
+              <el-table :data="tempData.list" class="table" tooltip-effect="light">
+                <el-table-column align="center" label="审核状态" prop="status" width="80px">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.status === 1">审核中</span>
+                    <span v-if="scope.row.status === 2" style="color: #9cd078;">通过</span>
+                    <span v-if="scope.row.status === 3" style="color: #fd2814;">打回</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="审核时间" prop="time" width="150px"></el-table-column>
+                <el-table-column align="center" label="打回原因" prop="reason" width="80px" show-overflow-tooltip></el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <el-button size="small" type="danger" @click="refuse">打回</el-button>
+          <el-button size="small" type="primary" @click="pass">通过</el-button>
+        </div>
+      </div>
+      <div class="mask" @click="closeDetailBox"></div>
+    </div>
+</template>
+
+<script>
+    export default {
+      name: "ShowTempDetail",
+      props:['isVisible', 'tempData'],
+      data: function () {
+        return {
+          myTempData:{
+            title: 'defaultVal',
+          }
+        }
+      },
+      methods:{
+        closeDetailBox: function () {
+          // 根据 props 不可修改原则，要将该值的改变包装成事件，反馈给父组件进行处理
+          // this.isVisible = !this.isVisible;
+          this.$emit("closeDetailBox");
+        },
+        pass: function () {
+          this.$prompt('请输入采购价', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            inputPattern: this.reg_Price,
+            inputErrorMessage: '金额格式不正确'
+          }).then(({ value }) => {
+            this.$message({
+              type: 'success',
+              message: '你的邮箱是: ' + value
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            });
+          });
+
+        },
+        refuse: function () {
+          this.$message.info("打回");
+        }
+      },
+    }
+</script>
+
+<style scoped>
+  /*总体*/
+  .showDetail{
+
+  }
+  /*弹窗主体*/
+  .body{
+    width: 640px;  /*600*/
+    height: 500px; /*460*/
+    /*display: table-cell;*/
+  }
+  .container{
+    padding: 20px;
+    float: top;
+    display: table-cell;
+  }
+  .left{
+    background: #f9f9f9;
+    border-radius: 8px;
+    width: 240px;
+    height: 380px;
+    float: left;
+    padding: 10px;
+  }
+  .right{
+    /*background: #f2f2f2;*/
+    width: 340px;
+    height: 400px;
+    float: right;
+    /*padding: 10px;*/
+    overflow-y: auto;
+  }
+  .right .item{
+    margin: 10px 10px;
+    padding: 6px 0;
+    text-align: left;
+    border-bottom: 1px #f1f1f1 solid;
+  }
+  .right .item .keyClass{
+    /*font-size: 20px;*/
+    /*font-weight: bold;*/
+    display: inline-block;
+    padding-left: 12px;
+    width: 80px;
+    color: #909399;
+  }
+  .right .status1, .status2, .status3{
+    padding: 1px 10px;
+    display: inline-block;
+    border-radius: 4px;
+    user-select: none;
+  }
+  .right .status1{
+    border: 1px #e0e5ee solid;
+    background: rgba(224, 229, 238, 0.5);
+  }
+  .right .status2{
+    border: 1px rgb(156, 208, 120) solid;
+    background: rgba(179, 238, 137, 0.5);
+    color: #4f4f4f;
+  }
+  .right .status3{
+    border: 1px #fd8a71 solid;
+    background: rgba(255, 165, 139, 0.5);
+  }
+
+  .right .tempAuditList{
+    margin: 0 12px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    /*border: 1px #909399 solid;*/
+  }
+  .right .table{
+    /*overflow-x: ;*/
+  }
+
+  .footer{
+    height: 60px;
+    float: bottom;
+    padding: 15px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15) inset;
+  }
+
+  ::-webkit-scrollbar
+  {
+    width: 4px;
+    height: 4px;
+    background-color: #F5F5F5;
+  }
+
+  /*定义滚动条轨道 内阴影+圆角*/
+  ::-webkit-scrollbar-track
+  {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+  }
+
+  /*定义滑块 内阴影+圆角*/
+  ::-webkit-scrollbar-thumb
+  {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(196, 196, 196, 0.3);
+    background-color: #7d7d7d;
+  }
+</style>

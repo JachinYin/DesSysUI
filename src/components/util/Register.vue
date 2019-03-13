@@ -21,15 +21,15 @@
                   <el-form-item label="账户">
                     <el-input
                       v-model="form.username"
-                      placeholder="请输入账号(5-20位字母数字组合)"
+                      placeholder="请输入账号(字母数字下划线组合)"
                       @input="validate()"
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="密码">
-                    <el-input type="password" v-model="form.password" placeholder="请输入密码(6-20位字母数字组合)"></el-input>
+                    <el-input type="password" v-model="form.password" placeholder="请输入密码(字母数字下划线组合)"></el-input>
                   </el-form-item>
                   <el-form-item label="密码">
-                    <el-input type="password" v-model="form.rePassword" placeholder="请确认密码(6-20位字母数字组合)"></el-input>
+                    <el-input type="password" v-model="form.rePassword" placeholder="请确认密码(字母数字下划线组合)"></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="onRegister()">注 册</el-button>
@@ -60,7 +60,7 @@
       methods: {
         onRegister: function () {
           let form = this.form;
-          let reg = /^\w+$/;
+          let reg = /^\w+$/; //字母+数字+下划线组合
           if(form.username === ""){
             this.$message.warning("请输入账号");
             return;

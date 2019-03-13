@@ -14,7 +14,7 @@
         <el-table-column align="center" label="剩余可提现金额" prop="priceTotal" width="200px"></el-table-column>
         <el-table-column align="center" label="操作" width="125px">
           <template slot-scope="scope">
-            <span @click="showInfo(scope.$index)" class="showDetail">查看</span>
+            <span @click="showDetail(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -25,12 +25,12 @@
 
 <script>
     import Pagination from "@/components/util/Pagination";
-    import {Pagination_Mixins} from "../../assets/mixins";
+    import {Pagination_Mixins2} from "../../assets/mixins";
 
     export default {
       name: "CashRecList",
       components: {Pagination},
-      mixins:[Pagination_Mixins],
+      mixins:[Pagination_Mixins2],
       data(){
         return{
           dataList:[]

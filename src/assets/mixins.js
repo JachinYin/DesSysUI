@@ -11,13 +11,10 @@
 * 8.这时就可以正常在 Vue 中使用混入中定义的方法或data或其他了。
 * */
 
-export const Pagination_Mixins = {
+export const Comm_Mixins = {
   data: function(){
     return{
-      page:{
-        index: 0,
-        size: 14
-      }
+      isLoad: true,
     }
   },
   methods: {

@@ -17,7 +17,7 @@
         <el-table-column align="center" label="可提现金额" prop="status" width="200px"></el-table-column>
         <el-table-column align="center" label="操作" width="125px">
           <template slot-scope="scope">
-            <span @click="showInfo(scope.$index)" class="showDetail">查看</span>
+            <span @click="showInfo(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -42,7 +42,7 @@
         }
       },
       methods:{
-        showInfo: function (index) {
+        showDetail: function (index) {
 
         },
         changePage: function (index, size) {

@@ -1,5 +1,5 @@
 <template>
-  <div class="body">
+  <div class="home">
     <Header/>
     <div class="main">
       <router-view/>
@@ -23,7 +23,7 @@
 </script>
 
 <style scoped>
-  .body{
+  .home{
     background: #f2f2f2;
   }
   .main{
@@ -64,7 +64,7 @@
     color: #5daf34;
   }
 
-  .showDetail{
+  .showDetail_btn{
     color: #2b89fb;
     /*text-decoration: underline;*/
     cursor: pointer;
@@ -77,6 +77,48 @@
     border-radius: 0 0 15px 15px;
   }
 
+
+  .el-message{
+    margin-top: 60px!important;
+  }
+
+</style>
+
+<!--弹窗样式-->
+<style>
+  /*通用弹窗格式*/
+  /*
+    <div class="具体弹窗名字 openHtml">
+      <div class="body">
+        这里是具体的弹窗内容，布局还有其他自定义
+      </div>
+      <div class="mask"></div>
+    </div>
+  */
+  .openHtml{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .body{
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    top: 12%;
+    margin: auto;
+    text-align: center;
+    background: white;
+    color: #909399;
+    border-radius: 6px;
+
+    width: 400px;
+    height: 460px;
+    z-index: 1000;
+
+    padding-top: 1px;
+  }
+
   /*mask*/
   .mask {
     top: 0;
@@ -86,9 +128,5 @@
     height: 100%;
     background-color: rgba(48, 48, 48, 0.74);
     z-index: 999;
-  }
-
-  .el-message{
-    margin-top: 60px!important;
   }
 </style>
