@@ -14,8 +14,8 @@
               <div class="item">
                 <span class="keyClass">状态：</span>
                 <span class="valClass">
-                  <span class="status1" v-if="tempData.status === 1">审核中</span>
-                  <span class="status2" v-else-if="tempData.status === 2">通过</span>
+                  <span class="status1" v-if="tempData.status === 1">待审核</span>
+                  <span class="status2" v-else-if="tempData.status === 3">通过</span>
                   <span class="status3" v-else>打回</span>
                 </span>
               </div>
@@ -49,8 +49,8 @@
                 <el-table-column align="center" label="审核状态" prop="status" width="80px">
                   <template slot-scope="scope">
                     <span v-if="scope.row.status === 1">审核中</span>
-                    <span v-if="scope.row.status === 2" style="color: #9cd078;">通过</span>
-                    <span v-if="scope.row.status === 3" style="color: #fd2814;">打回</span>
+                    <span v-if="scope.row.status === 2" style="color: #fd2814;">打回</span>
+                    <span v-if="scope.row.status === 3" style="color: #41C26E;">通过</span>
                   </template>
                 </el-table-column>
                 <el-table-column align="center" label="审核时间" prop="time" width="150px"></el-table-column>
@@ -60,8 +60,9 @@
           </div>
         </div>
         <div class="footer">
-          <el-button size="small" type="danger" @click="refuse">打回</el-button>
-          <el-button size="small" type="primary" @click="pass">通过</el-button>
+          <el-button size="small" type="danger" @click="refuse" v-if="tempData.status !== 2">打回</el-button>
+          <el-button size="small" type="primary" @click="pass" v-if="tempData.status === 1">通过</el-button>
+          <span class="close_btn" @click="closeDetailBox" v-if="tempData.status === 2">&#10006</span>
         </div>
       </div>
       <div class="mask" @click="closeDetailBox"></div>
@@ -92,10 +93,28 @@
             inputPattern: this.reg_Price,
             inputErrorMessage: '金额格式不正确'
           }).then(({ value }) => {
-            this.$message({
-              type: 'success',
-              message: '你的邮箱是: ' + value
-            });
+            let thiz = this;
+            $.ajax({
+              url: thiz.preUrl + 'tempPass',
+              type: 'get',
+              dataType: 'json',
+              data: {
+                price: value,
+                tempId: thiz.tempData.tempId,
+              },
+              success : function (res) {
+                if(res.success){
+                  thiz.$message.success(res.msg);
+                  thiz.$emit("refresh");
+                  thiz.closeDetailBox();
+                }else{
+                  thiz.$message.error(res.msg);
+                }
+              },
+              error: function (res) {
+                this.$message.error("网络繁忙，请刷新后重试");
+              }
+            })
           }).catch(() => {
             this.$message({
               type: 'info',
@@ -105,7 +124,27 @@
 
         },
         refuse: function () {
-          this.$message.info("打回");
+          let thiz = this;
+          $.ajax({
+            url: thiz.preUrl + 'tempRefuse',
+            type: 'get',
+            dataType: 'json',
+            data: {
+              tempId: thiz.tempData.tempId,
+            },
+            success : function (res) {
+              if(res.success){
+                thiz.$message.success(res.msg);
+                thiz.$emit("refresh");
+                thiz.closeDetailBox();
+              }else{
+                thiz.$message.error(res.msg);
+              }
+            },
+            error: function (res) {
+              this.$message.error("网络繁忙，请刷新后重试");
+            }
+          })
         }
       },
     }
@@ -168,8 +207,8 @@
     background: rgba(224, 229, 238, 0.5);
   }
   .right .status2{
-    border: 1px rgb(156, 208, 120) solid;
-    background: rgba(179, 238, 137, 0.5);
+    border: 1px #41C26E solid;
+    background: rgba(65, 194, 110, 0.47);
     color: #4f4f4f;
   }
   .right .status3{
@@ -188,10 +227,28 @@
   }
 
   .footer{
-    height: 60px;
+    height: 30px;
     float: bottom;
     padding: 15px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15) inset;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .footer .close_btn{
+    line-height: 30px;
+    font-weight: lighter;
+    margin-top: 100px;
+    cursor: pointer;
+    user-select: none;
+    border: 1px #d6d6d6 solid;
+    background: #f2f2f2;
+    color: #b8bbc3;
+    border-radius: 50%;
+    padding: 7px 9px;
+  }
+  .footer .close_btn:hover{
+    opacity: 0.8;
+    border: 1px #a6a6a9 solid;
   }
 
   ::-webkit-scrollbar

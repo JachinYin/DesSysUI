@@ -13,9 +13,9 @@
         <el-table-column align="center" label="审核时间" prop="time" width="200px"></el-table-column>
         <el-table-column align="center" label="审核状态" prop="status" width="125px">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">审核中</span>
-            <span v-if="scope.row.status === 2" style="color: #9cd078;">通过</span>
-            <span v-if="scope.row.status === 3" style="color: #fd2814;">打回</span>
+            <span v-if="scope.row.status === 1">待审核</span>
+            <span v-if="scope.row.status === 2" style="color: #fd2814;">打回</span>
+            <span v-if="scope.row.status === 3" style="color: #41C26E">通过</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="采购价" prop="price" width="125px"></el-table-column>
@@ -37,7 +37,7 @@
       >
       </el-pagination>
     </div>
-    <ShowDetail :is-visible="isDetailVisible" :temp-data="tempData" @closeDetailBox="closeDetailBox"/>
+    <ShowDetail :is-visible="isDetailVisible" :temp-data="tempData" @closeDetailBox="closeDetailBox" @refresh="refreshTabData"/>
     <div class="filter_temp openHtml" v-if="isFilterVisible" v-cloak>
       <div class="body">
             <span class="title">
@@ -110,7 +110,7 @@
           dataType: 'json',
           success: function (res) {
             console.log(res);
-            thiz.tempData = res.other;
+            thiz.tempData = res.data;
             thiz.isDetailVisible = true;
           },
           error:function (res) {
@@ -130,7 +130,7 @@
           dataType: 'json',
           success:function (res) {
             if(res.success){
-              let data = res.other;
+              let data = res.data;
 
               data.list = format(data.list);
 

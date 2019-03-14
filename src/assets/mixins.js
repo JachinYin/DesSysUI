@@ -30,7 +30,7 @@ export const Pagination_Mixins2 = {
     return{
       page:{
         currentPage: 1,  // 当前页
-        pageSize: 3,        // 分页数
+        pageSize: 13,        // 分页数
         total: 0,        // 总记录
       }
     }
