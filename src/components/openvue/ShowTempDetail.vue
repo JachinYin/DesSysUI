@@ -53,31 +53,35 @@
                     <span v-if="scope.row.status === 3" style="color: #41C26E;">通过</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="审核时间" prop="time" width="150px"></el-table-column>
-                <el-table-column align="center" label="打回原因" prop="reason" width="80px" show-overflow-tooltip></el-table-column>
+                <el-table-column align="center" label="审核时间" prop="time" width="180px"></el-table-column>
+                <el-table-column align="center" label="打回原因" prop="reason" width="110px" show-overflow-tooltip></el-table-column>
               </el-table>
             </div>
           </div>
         </div>
         <div class="footer">
-          <el-button size="small" type="danger" @click="refuse" v-if="tempData.status !== 2">打回</el-button>
-          <el-button size="small" type="primary" @click="pass" v-if="tempData.status === 1">通过</el-button>
+          <el-button type="danger" @click="refuse" v-if="tempData.status !== 2">打回</el-button>
+          <el-button type="primary" @click="pass" v-if="tempData.status === 1">通过</el-button>
           <span class="close_btn" @click="closeDetailBox" v-if="tempData.status === 2">&#10006</span>
         </div>
       </div>
       <div class="mask" @click="closeDetailBox"></div>
+      <ShowRefuseReason :is-visible="isReasonVisible" @closeReasonBox="closeReasonBox"/>
     </div>
 </template>
 
 <script>
+    import ShowRefuseReason from "./ShowRefuseReason";
     export default {
       name: "ShowTempDetail",
+      components: {ShowRefuseReason},
       props:['isVisible', 'tempData'],
       data: function () {
         return {
           myTempData:{
             title: 'defaultVal',
-          }
+          },
+          isReasonVisible: false, // 这个控制原因弹窗展示与否
         }
       },
       methods:{
@@ -85,6 +89,9 @@
           // 根据 props 不可修改原则，要将该值的改变包装成事件，反馈给父组件进行处理
           // this.isVisible = !this.isVisible;
           this.$emit("closeDetailBox");
+        },
+        closeReasonBox: function () {
+          this.isReasonVisible = false;
         },
         pass: function () {
           this.$prompt('请输入采购价', '提示', {
@@ -124,6 +131,8 @@
 
         },
         refuse: function () {
+          this.isReasonVisible = true;
+          return;
           let thiz = this;
           $.ajax({
             url: thiz.preUrl + 'tempRefuse',
@@ -157,8 +166,8 @@
   }
   /*弹窗主体*/
   .body{
-    width: 640px;  /*600*/
-    height: 500px; /*460*/
+    width: 800px;  /*600*/
+    height: 600px; /*460*/
     /*display: table-cell;*/
   }
   .container{
@@ -169,15 +178,15 @@
   .left{
     background: #f9f9f9;
     border-radius: 8px;
-    width: 240px;
-    height: 380px;
+    width: 340px;
+    height: 470px;
     float: left;
     padding: 10px;
   }
   .right{
     /*background: #f2f2f2;*/
-    width: 340px;
-    height: 400px;
+    width: 400px;
+    height: 490px;
     float: right;
     /*padding: 10px;*/
     overflow-y: auto;
@@ -227,7 +236,7 @@
   }
 
   .footer{
-    height: 30px;
+    height: 40px;
     float: bottom;
     padding: 15px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15) inset;
@@ -235,7 +244,7 @@
     vertical-align: middle;
   }
   .footer .close_btn{
-    line-height: 30px;
+    line-height: 40px;
     font-weight: lighter;
     margin-top: 100px;
     cursor: pointer;
@@ -244,7 +253,7 @@
     background: #f2f2f2;
     color: #b8bbc3;
     border-radius: 50%;
-    padding: 7px 9px;
+    padding: 10px 12px;
   }
   .footer .close_btn:hover{
     opacity: 0.8;
