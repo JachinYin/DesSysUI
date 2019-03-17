@@ -3,8 +3,10 @@
       <div class="body">
         <div class="container">
           <div class="left">
-            <img src="" alt="">
-            <span>图片区域</span>
+            <div class="imgBox">
+              <img :src="tempData.imgUrl" width="340px">
+              <span v-show="!tempData.imgUrl">暂无封面</span>
+            </div>
           </div>
           <div class="right">
             <div class="tempData">
@@ -18,6 +20,9 @@
                   <span class="status2" v-else-if="tempData.status === 3">通过</span>
                   <span class="status3" v-else>打回</span>
                 </span>
+              </div>
+              <div class="item">
+                <span class="keyClass">描述：</span> <span class="valClass">{{tempData.content}}</span>
               </div>
               <div class="item">
                 <span class="keyClass">采购价：</span> <span class="valClass">{{tempData.price}}</span>
@@ -40,11 +45,9 @@
               <div class="item">
                 <span class="keyClass">手机：</span> <span class="valClass">{{tempData.phone}}</span>
               </div>
-              <div class="item">
-                <span class="keyClass" style="width: 100px">审核记录表：</span><span>↓</span>
-              </div>
             </div>
             <div class="tempAuditList">
+              <div class="tableTitle">审核记录表</div>
               <el-table :data="tempData.list" class="table" tooltip-effect="light">
                 <el-table-column align="center" label="审核状态" prop="status" width="80px">
                   <template slot-scope="scope">
@@ -183,6 +186,16 @@
     float: left;
     padding: 10px;
   }
+  .left .imgBox{
+    height: 470px;
+    display: table-cell;
+    vertical-align: middle;
+  }
+  .left img:hover{
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
+  }
+
+
   .right{
     /*background: #f2f2f2;*/
     width: 400px;
@@ -204,6 +217,10 @@
     padding-left: 12px;
     width: 80px;
     color: #909399;
+  }
+  .right .item .valClass{
+    display: inline-block;
+    width: 275px;
   }
   .right .status1, .status2, .status3{
     padding: 1px 10px;
@@ -230,6 +247,12 @@
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 6px;
     /*border: 1px #909399 solid;*/
+  }
+  .right .tempAuditList .tableTitle{
+    padding: 15px 0 5px 130px;
+    text-align: left;
+    font-weight: bold;
+    border-bottom: 1px rgba(0, 0, 0, 0.1) solid;
   }
   .right .table{
     /*overflow-x: ;*/

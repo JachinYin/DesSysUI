@@ -8,6 +8,7 @@ import router from './router'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import CommTool from "./assets/CommJs";
 
 Vue.use(ElementUI);
 
@@ -26,3 +27,54 @@ new Vue({
   components: { App },
   template: '<App/>'
 });
+
+$.ajaxSetup({
+  dataType: "json",
+  // cache: false,
+  headers: {
+    "TOKEN": CommTool.getCookie("TOKEN")
+  },
+  xhrFields: {
+    withCredentials: true
+  },
+  crossDomain: true,
+  // complete: function(xhr) {
+  //   //token过期，则跳转到登录页面
+  //   if(xhr.responseJSON.code == 401){
+  //     parent.location.href = baseURL + 'login.html';
+  //   }
+  // }
+});
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.requireAuth) {  // 判断该路由是否需要登录权限
+    if (CommTool.getCookie("TOKEN")) {  // 通过vuex state获取当前的token是否存在
+      next();
+    }
+    else {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath,   // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        }
+      })
+    }
+  }
+  else {
+    next();
+  }
+});
+
+
+// $(window).keydown(function (e) {
+//   if (e.keyCode == '116') {
+//     let url = document.location.href;
+//     let urls = url.split("/");
+//     let length = urls.length;
+//     if(length > 1) url = '/' + urls[length-1];
+//     else url = '/';
+//     console.log(url);
+//     Vue.$router.push(url);
+//     return false;
+//   }
+// });

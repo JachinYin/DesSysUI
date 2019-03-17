@@ -40,14 +40,25 @@ export default new Router({
         {
           path:'/login',
           name:'Login',
+          meta:{
+            requireAuth: true
+          },
           component: Login
-        }
+        },
       ]
     },
     {
       path: '/register',
       name: 'Reg',
+      meta:{
+        requireAuth: true
+      },
       component: Register
-    }
+    },
+    {
+      path: '*',
+      name: '404',
+      template:"<h1>404 NotFound</h1>"
+    },
   ]
 })

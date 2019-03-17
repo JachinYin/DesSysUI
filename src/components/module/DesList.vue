@@ -1,16 +1,22 @@
 <template>
-  <div class="dataList">
+  <div class="desList">
     <div class="head-box">
       <span class="filter" @click="showFilter()">筛选</span>
       <span class="static">统计数据</span>
     </div>
     <div class="table">
-      <el-table :data="dataList.slice(page.index, page.size)" border :height="609" tooltip-effect="light">
+      <el-table :data="desList.slice(index, size)" border :height="609" tooltip-effect="light">
         <el-table-column align="center" label="AID" prop="aid" width="200px"></el-table-column>
-        <el-table-column align="center" label="设计师名称" prop="name" width="300px"
+        <el-table-column align="center" label="设计师名称" prop="nickName" width="300px"
                          show-overflow-tooltip></el-table-column>
         <el-table-column align="center" label="提交时间" prop="time" width="250px"></el-table-column>
-        <el-table-column align="center" label="审核状态" prop="status" width="200px"></el-table-column>
+        <el-table-column align="center" label="审核状态" prop="status" width="200px">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 1">待审核</span>
+            <span v-if="scope.row.status === 2" style="color: #fd2814;">打回</span>
+            <span v-if="scope.row.status === 3" style="color: #41C26E">通过</span>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="操作" width="149px">
           <template slot-scope="scope">
             <span @click="showInfo(scope.$index)" class="showDetail_btn">查看</span>
@@ -18,127 +24,128 @@
         </el-table-column>
       </el-table>
     </div>
-    <Pagination :data-list="dataList" @getPage="changePage"/>
+    <div class="pageNav">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="page.currentPage"
+        :page-size="page.pageSize"
+        :total="page.total"
+        layout="total, prev, pager, next, jumper"
+        style="padding-top: 12px"
+      >
+      </el-pagination>
+    </div>
+    <!--查看审核信息-->
+    <ShowDesDetailBox
+      :is-visible="isDetailVisible"
+      :desData="desData"
+      @closeDetailBox="closeDetailBox"
+    />
+
+    <!--打开筛选-->
+    <ShowDesFilterBox :is-visible="isFilterVisible" @closeFilterBox="closeFilterBox" @onFilter="onFilter"/>
   </div>
 </template>
 
 <script>
-  import Pagination from "@/components/util/Pagination";
-  import {Pagination_Mixins2} from "../../assets/mixins";
+  import Pagination from "../../components/util/Pagination";
+  import {Comm_Mixins,Pagination_Mixins2} from "../../assets/mixins";
+  import ShowDesDetailBox from "./openvue/designerList/ShowDesDetailBox";
+  import ShowDesFilterBox from "./openvue/designerList/ShowDesFilterBox";
 
   export default {
     name: "DesList",
-    components: {Pagination},
-    mixins:[Pagination_Mixins2],
+    components: {ShowDesFilterBox, ShowDesDetailBox, Pagination},
+    mixins:[Comm_Mixins,Pagination_Mixins2],
     data: function() {
       return {
-        dataList: [],
+        desList: [],
+        desData: {},
+        form:{},
       }
     },
     methods: {
-      showDetail: function () {
-
+      // 过滤器相关方法
+      showFilter : function(){
+        this.isFilterVisible = true;
       },
+      closeFilterBox: function(){
+        this.isFilterVisible = false;
+      },
+      onFilter: function(form){
+        this.form = form;
+        this.refreshDesList();
+      },
+
+
+
+      // 查看设计师详细信息相关方法
+      showInfo: function (index) {
+        console.log(index);
+        let thiz = this;
+        let aid = thiz.desList[index].aid;
+        $.ajax({
+          url: thiz.preUrl + "getDesByAid",
+          data: {
+            aid: aid,
+          },
+          type: 'get',
+          dataType: 'json',
+          success: function (res) {
+            if(res.success) {
+              thiz.desData = res.data;
+              thiz.isDetailVisible = true;
+            }else{
+              thiz.$message.error("服务繁忙，请稍后重试");
+            }
+          },
+          error: function (res) {
+            thiz.$message.error("服务繁忙，请稍后重试");
+          }
+        });
+      },
+      closeDetailBox: function(){
+        this.isDetailVisible = false;
+      },
+
+
+
+      refreshDesList: function () {
+        let thiz = this;
+        $.ajax({
+          url: thiz.preUrl + "getDesignerList",
+          type: 'get',
+          dataType: 'json',
+          data: {
+            aid: thiz.form.aid || 0,
+            status: thiz.form.status,
+            nickName: thiz.form.nickName,
+            time: thiz.form.time,
+          },
+          success:function (res) {
+            if(res.success){
+              let data = res.data;
+              thiz.desList = data.list;
+              thiz.page.total = thiz.desList.length;
+              thiz.isLoad = false;
+            }else{
+              if (res.code === 101){
+                thiz.$router.push('/login');
+                return;
+              }
+              thiz.$message.error(res.msg);
+
+            }
+          },
+          error: function (data) {
+            thiz.$message.error('【认证审核表】服务繁忙，请稍后重试');
+          }
+        });
+      },
+
     },
     created: function() {
-      this.dataList = [
-        {
-          aid: 1,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 2,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 3,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 4,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 5,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 6,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 7,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 8,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 9,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 10,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 11,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 12,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 13,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 14,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 15,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-        {
-          aid: 16,
-          name: '花艺',
-          time: '2019-03-11',
-          status: '审核中',
-        },
-      ];
+      this.refreshDesList()
     }
   }
 </script>

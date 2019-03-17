@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="background: #f2f2f2">
       <div class="login_box">
         <div class="head">
           <span class="title">
@@ -8,7 +8,7 @@
           </span>
           <hr>
         </div>
-        <div class="body">
+        <div class="container">
           <div class="icon">
             <img src="../../assets/timg.png" alt="logo">
 
@@ -51,11 +51,53 @@
       },
       methods:{
           login: function () {
-            this.$message.success("成功");
-            console.log(this.form);
+            // this.$message.success("成功");
+            // console.log(this.form);
+            if(this.form.name === ''){
+              this.$message.warning("输入用户名");
+              return;
+            }
+            if(this.form.password === ''){
+              this.$message.success("输入密码");
+              return;
+            }
+
+            let thiz = this;
+            $.ajax({
+              url: thiz.preUrl + 'login',
+              data:{
+                name: thiz.form.name,
+                password: thiz.form.password,
+                rememberMe: thiz.form.rememberMe,
+              },
+              success: function (res) {
+                // 成功登陆
+                if(res.success){
+
+                  thiz.$router.push("/tempList");
+                  console.log(document.cookie);
+                }
+                // 登陆失败
+                else{
+                  thiz.$message.error(res.msg);
+                }
+              },
+              error: function (res) {
+                // thiz.$message.error("服务繁忙，请稍后重试");
+                thiz.$message.error(res.msg + "233");
+                console.log(res);
+              }
+            })
+
           },
           register: function () {
            this.$router.push("/register")
+          }
+      },
+      created() {
+          let TOKEN = this.$CommTool.getCookie("TOKEN");
+          if(TOKEN !== ""){
+            this.$router.push("/tempList");
           }
       }
     }
@@ -77,31 +119,31 @@
     box-shadow:0 0 10px #858585;
     padding-top: 1px;
   }
-  .body{
+  .container{
     text-align: left;
   }
-  .body .icon{
+  .container .icon{
     text-align: center;
   }
-  .body .icon img{
+  .container .icon img{
     width: 240px;
     height: 240px;
     -webkit-user-drag: none;
   }
 
-  .body .title{
+  .head .title{
     display: block;
     text-align: left;
     margin: 15px 25px;
     height: 25px;
     font-size: 18px;
   }
-  .body .close_btn{
+  .head .close_btn{
     float: right;
     padding-right: 10px;
     cursor: pointer;
   }
-  .body hr{
+  .head hr{
     border: none;
     width: 90%;
     border-bottom: 1px #bfbfbf4a solid;

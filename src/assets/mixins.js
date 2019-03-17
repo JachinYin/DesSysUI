@@ -15,11 +15,12 @@ export const Comm_Mixins = {
   data: function(){
     return{
       isLoad: true,
+      isFilterVisible: false,
+      isDetailVisible: false,
     }
   },
   methods: {
     changePage: function (index, size) {
-      console.log("2");
       this.page.index = index;
       this.page.size = size;
     },
