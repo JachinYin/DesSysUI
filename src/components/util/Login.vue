@@ -15,10 +15,10 @@
           </div>
 
           <el-form ref="form" :model="form" label-width="40px">
-            <el-form-item label="账户">
+            <el-form-item label="账户" @keyup.enter.native="login()">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item label="密码" @keyup.enter.native="login()">
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
             <el-form-item>
@@ -42,8 +42,8 @@
       data(){
           return{
             form:{
-              name: '',
-              password: '',
+              name: 'jachin',
+              password: '123123',
               rememberMe: false,
             },
             isLoginVisible: false
