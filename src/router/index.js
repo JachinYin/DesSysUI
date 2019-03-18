@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home'
+import Error from '../components/Error'
 import TempList from '../components/module/TempList'
 import DesList from '../components/module/DesList'
 import CashRecList from '../components/module/CashRecList'
@@ -58,7 +59,7 @@ export default new Router({
     {
       path: '*',
       name: '404',
-      template:"<h1>404 NotFound</h1>"
+      component: Error
     },
   ]
 })
