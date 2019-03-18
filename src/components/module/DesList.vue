@@ -81,7 +81,6 @@
 
       // 查看设计师详细信息相关方法
       showInfo: function (index) {
-        console.log(index);
         let thiz = this;
         let aid = thiz.desList[index].aid;
         $.ajax({

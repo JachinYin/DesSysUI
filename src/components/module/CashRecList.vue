@@ -5,7 +5,7 @@
       <span class="static">统计数据</span>
     </div>
     <div class="table">
-      <el-table :data="dataList.slice()" border :height="609" tooltip-effect="light">
+      <el-table :data="cashRecList.slice(index,size)" border :height="609" tooltip-effect="light">
         <el-table-column align="center" label="提交时间" prop="time" width="200px"></el-table-column>
         <el-table-column align="center" label="AID" prop="aid" width="170px"></el-table-column>
         <el-table-column align="center" label="设计师名称" prop="name" width="200px"
@@ -19,21 +19,30 @@
         </el-table-column>
       </el-table>
     </div>
-    <Pagination :data-list="dataList" @getPage="changePage"/>
+    <div class="pageNav">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page="page.currentPage"
+        :page-size="page.pageSize"
+        :total="page.total"
+        layout="total, prev, pager, next, jumper"
+        style="padding-top: 12px"
+      >
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
 <script>
-    import Pagination from "@/components/util/Pagination";
     import {Pagination_Mixins2} from "../../assets/mixins";
 
     export default {
       name: "CashRecList",
-      components: {Pagination},
       mixins:[Pagination_Mixins2],
       data(){
         return{
-          dataList:[]
+          cashRecList:[]
         }
       },
       methods:{},

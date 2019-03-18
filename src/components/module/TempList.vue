@@ -139,7 +139,7 @@
       refreshTabData: function () {
         let thiz = this;
         $.ajax({
-          url: thiz.preUrl + "getTemplateList",
+          url: thiz.preUrl + "getTemplateAuditList",
           type: 'get',
           data: {
             designer: thiz.designer,
