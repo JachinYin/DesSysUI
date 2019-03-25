@@ -147,6 +147,7 @@
             tempId: thiz.tempId || 0,
             time: thiz.time,
             title: thiz.title,
+            distinct: true,
           },
           success: function (res) {
             if (res.success) {
