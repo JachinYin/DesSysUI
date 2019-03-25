@@ -110,6 +110,7 @@
               url: thiz.preUrl + '/setTemplateAudit/3',
               type: 'get',
               data: {
+                aid: thiz.tempData.aid,
                 price: value,
                 tempId: thiz.tempData.tempId,
               },
