@@ -69,7 +69,7 @@
         </div>
       </div>
       <div class="mask" @click="closeDetailBox"></div>
-      <ShowRefuseReason :is-visible="isReasonVisible" @closeReasonBox="closeReasonBox"/>
+      <ShowRefuseReason :is-visible="isReasonVisible" :temp-id="tempData.tempId" @closeReasonBox="closeReasonBox"/>
     </div>
 </template>
 
@@ -81,9 +81,6 @@
       props:['isVisible', 'tempData'],
       data: function () {
         return {
-          myTempData:{
-            title: 'defaultVal',
-          },
           isReasonVisible: false, // 这个控制原因弹窗展示与否
         }
       },
@@ -93,9 +90,14 @@
           // this.isVisible = !this.isVisible;
           this.$emit("closeDetailBox");
         },
-        closeReasonBox: function () {
+        closeReasonBox: function (isRefuse) {
           this.isReasonVisible = false;
+          if(isRefuse){
+            this.$emit("closeDetailBox");
+            this.$emit("refresh");
+          }
         },
+        // 通过操作
         pass: function () {
           this.$prompt('请输入采购价', '提示', {
             confirmButtonText: '确定',
@@ -105,7 +107,7 @@
           }).then(({ value }) => {
             let thiz = this;
             $.ajax({
-              url: thiz.preUrl + 'tempPass',
+              url: thiz.preUrl + 'setTemplateAudit/3',
               type: 'get',
               dataType: 'json',
               data: {
@@ -133,30 +135,9 @@
           });
 
         },
+        // 打回操作
         refuse: function () {
           this.isReasonVisible = true;
-          return;
-          let thiz = this;
-          $.ajax({
-            url: thiz.preUrl + 'tempRefuse',
-            type: 'get',
-            dataType: 'json',
-            data: {
-              tempId: thiz.tempData.tempId,
-            },
-            success : function (res) {
-              if(res.success){
-                thiz.$message.success(res.msg);
-                thiz.$emit("refresh");
-                thiz.closeDetailBox();
-              }else{
-                thiz.$message.error(res.msg);
-              }
-            },
-            error: function (res) {
-              this.$message.error("网络繁忙，请刷新后重试");
-            }
-          })
         }
       },
     }

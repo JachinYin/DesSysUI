@@ -8,13 +8,13 @@
       <div class="container">
         <div class="chose">
           <el-checkbox-group v-model="reasons" @change="putReason">
-            <div class="item"><el-checkbox label="缺少封面" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="封面不符合主题" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="标题或内容含敏感词汇" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="关键词填写有误" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="行业信息不对" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="内容过长" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="主题不明显" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="缺少封面或封面不符合主题" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="模板内出现明星肖像" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="标题或内容存在违规词，违反广告法" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="主视觉不明确，不符合要求" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="图片素材陈旧，风格不统一，呈现效果不及主流品质" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="缺少行业或关键词设置" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="其他原因" name="reasons"></el-checkbox></div>
           </el-checkbox-group>
         </div>
         <div class="input">
@@ -33,29 +33,60 @@
 <script>
     export default {
       name: "ShowRefuseReason",
-      props: ['isVisible'],
+      props: ['isVisible', 'tempId'],
       data: function () {
         return{
           reason: '',
           reasons: [],
+          isRefuse: false
         }
       },
       methods: {
         closeReasonBox: function () {
-          this.$emit("closeReasonBox")
+          this.$emit("closeReasonBox", this.isRefuse)
         },
         submitReason: function () {
-          console.log(this.reasons);
-          console.log(this.reason);
+          if(this.reason === '') {
+            this.$message.warning("请填写打回原因");
+            return;
+          }
+          let thiz = this;
+          this.$confirm('确定打回该作品？打回后将不可撤销！请确认', '提示', {
+            confirmButtonText: '打回',
+            confirmButtonClass: 'el-button--danger el-button--medium',
+            cancelButtonText: '取消',
+            cancelButtonClass: 'el-button--medium',
+            type: 'warning',
+            center: true,
+            distinguishCancelAndClose: true
+          }).then((action) => {
+
+            $.ajax({
+              url: thiz.preUrl + 'setTemplateAudit/2',
+              type: 'get',
+              data: {
+                tempId: thiz.tempId,
+                reason: thiz.reason,
+              },
+              success : function (res) {
+                if(res.success){
+                  thiz.$message.success(res.msg);
+                  thiz.isRefuse = true;
+                  thiz.closeReasonBox();
+                  thiz.isRefuse = false;
+                }else{
+                  thiz.$message.error(res.msg);
+                }
+              },
+              error: function (res) {
+                thiz.$message.error("网络繁忙，请刷新后重试");
+              }
+            });
+
+          }).catch(action => {});
         },
         putReason: function () {
           this.reason = String(this.reasons) + ",";
-          // this.reason = this.reasons;
-          // console.log(this.reasons);
-          // for(let i in this.reasons){
-          //   this.reason += this.reasons[i];
-          //   this.reason += ';'
-          // }
         }
       }
     }
