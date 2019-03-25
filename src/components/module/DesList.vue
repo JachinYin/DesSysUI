@@ -84,7 +84,7 @@
         let thiz = this;
         let aid = thiz.desList[index].aid;
         $.ajax({
-          url: thiz.preUrl + "getDesByAid",
+          url: thiz.preUrl + "/getDesByAid",
           data: {
             aid: aid,
           },
@@ -112,7 +112,7 @@
       refreshDesList: function () {
         let thiz = this;
         $.ajax({
-          url: thiz.preUrl + "getDesignerList",
+          url: thiz.preUrl + "/getDesignerList",
           type: 'get',
           dataType: 'json',
           data: {

@@ -116,7 +116,7 @@
         let thiz = this;
         let tempId = thiz.templateList[index].tempId;
         $.ajax({
-          url: thiz.preUrl + "getTempAuditById",
+          url: thiz.preUrl + "/getTempAuditById",
           data: {
             tempId: tempId,
           },
@@ -139,7 +139,7 @@
       refreshTabData: function () {
         let thiz = this;
         $.ajax({
-          url: thiz.preUrl + "getTemplateAuditList",
+          url: thiz.preUrl + "/getTemplateAuditList",
           type: 'get',
           data: {
             designer: thiz.designer,

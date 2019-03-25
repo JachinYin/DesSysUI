@@ -107,7 +107,7 @@
           }).then(({ value }) => {
             let thiz = this;
             $.ajax({
-              url: thiz.preUrl + 'setTemplateAudit/3',
+              url: thiz.preUrl + '/setTemplateAudit/3',
               type: 'get',
               dataType: 'json',
               data: {
