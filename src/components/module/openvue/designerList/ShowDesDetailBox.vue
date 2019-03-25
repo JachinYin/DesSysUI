@@ -139,7 +139,6 @@
             // $.ajax({
             //   url: thiz.preUrl + 'tempPass',
             //   type: 'get',
-            //   dataType: 'json',
             //   data: {
             //     price: value,
             //     tempId: thiz.tempData.tempId,
@@ -166,7 +165,6 @@
           // $.ajax({
           //   url: thiz.preUrl + 'tempRefuse',
           //   type: 'get',
-          //   dataType: 'json',
           //   data: {
           //     tempId: thiz.tempData.tempId,
           //   },

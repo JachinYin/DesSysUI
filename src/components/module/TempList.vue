@@ -121,7 +121,6 @@
             tempId: tempId,
           },
           type: 'get',
-          dataType: 'json',
           success: function (res) {
             console.log(res);
             thiz.tempData = res.data;

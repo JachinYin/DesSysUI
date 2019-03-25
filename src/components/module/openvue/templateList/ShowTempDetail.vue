@@ -109,7 +109,6 @@
             $.ajax({
               url: thiz.preUrl + '/setTemplateAudit/3',
               type: 'get',
-              dataType: 'json',
               data: {
                 price: value,
                 tempId: thiz.tempData.tempId,

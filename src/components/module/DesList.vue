@@ -114,7 +114,6 @@
         $.ajax({
           url: thiz.preUrl + "/getDesignerList",
           type: 'get',
-          dataType: 'json',
           data: {
             aid: thiz.form.aid || 0,
             status: thiz.form.status,
