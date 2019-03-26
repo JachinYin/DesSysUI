@@ -135,6 +135,7 @@
       closeDetailBox: function () {
         this.isDetailVisible = false;
       },
+
       refreshTabData: function () {
         let thiz = this;
         $.ajax({
@@ -167,6 +168,8 @@
           }
         });
       },
+
+
     },
     created() {
       this.refreshTabData();
