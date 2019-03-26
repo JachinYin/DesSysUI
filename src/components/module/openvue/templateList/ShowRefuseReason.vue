@@ -62,7 +62,7 @@
           }).then((action) => {
 
             $.ajax({
-              url: thiz.preUrl + '/setTemplateAudit/2',
+              url: thiz.preUrl + '/doTemplateAudit/back',
               type: 'get',
               data: {
                 tempId: thiz.tempId,

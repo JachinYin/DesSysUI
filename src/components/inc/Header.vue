@@ -68,7 +68,7 @@
     position: absolute;
     /*text-align: left;*/
     top: 10px;
-    left: 0;
+    left: 10px;
 
   }
   .nav{

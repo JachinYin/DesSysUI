@@ -107,18 +107,18 @@
           }).then(({ value }) => {
             let thiz = this;
             $.ajax({
-              url: thiz.preUrl + '/setTemplateAudit/3',
+              url: thiz.preUrl + '/doTemplateAudit/pass',
               type: 'get',
               data: {
-                aid: thiz.tempData.aid,
+                // aid: thiz.tempData.aid,
                 price: value,
                 tempId: thiz.tempData.tempId,
               },
               success : function (res) {
                 if(res.success){
-                  thiz.$message.success(res.msg);
                   thiz.$emit("refresh");
                   thiz.closeDetailBox();
+                  thiz.$message.success(res.msg);
                 }else{
                   thiz.$message.error(res.msg);
                 }

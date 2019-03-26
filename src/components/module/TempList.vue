@@ -116,7 +116,7 @@
         let thiz = this;
         let tempId = thiz.templateList[index].tempId;
         $.ajax({
-          url: thiz.preUrl + "/getTempAuditById",
+          url: thiz.preUrl + "/getAuditShowData",
           data: {
             tempId: tempId,
           },
