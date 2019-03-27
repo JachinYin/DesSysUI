@@ -71,12 +71,13 @@
       },
       closeFilterBox: function(){
         this.isFilterVisible = false;
+
       },
       onFilter: function(form){
         this.form = form;
+        this.isFilterVisible = false;
         this.refreshDesList();
       },
-
 
 
       // 查看设计师详细信息相关方法
@@ -88,8 +89,6 @@
           data: {
             aid: aid,
           },
-          type: 'get',
-          dataType: 'json',
           success: function (res) {
             if(res.success) {
               thiz.desData = res.data;
@@ -113,12 +112,13 @@
         let thiz = this;
         $.ajax({
           url: thiz.preUrl + "/getDesignerAuditList",
-          type: 'get',
           data: {
             aid: thiz.form.aid || 0,
             status: thiz.form.status,
             nickName: thiz.form.nickName,
-            time: thiz.form.time,
+            begTime: thiz.form.begTime,
+            endTime: thiz.form.endTime,
+            distinct: true,
           },
           success:function (res) {
             if(res.success){

@@ -6,28 +6,49 @@
         <span class="close_btn" @click="closeFilterBox">&#10006</span>
       </span>
       <hr>
-      <span class="input_line">
-        <label>账户AID</label><input type="text" v-model="form.aid">
-      </span>
-      <span class="input_line">
-        <label>设计昵称</label><input type="text" v-model="form.nickName">
-      </span>
-      <span class="input_line">
-        <label>审核时间</label><input type="text" v-model="form.time">
-      </span>
-      <span class="input_line">
-        <label>审核状态</label>
-        <select type="select" v-model="form.status">
-          <option value="1">待审核</option>
-          <option value="2">打回</option>
-          <option value="3">通过</option>
-        </select>
-      </span>
-      <br>
-      <div class="footer">
-        <div class="btn" @click="onClear">重置</div>
-        <div class="btn" @click="onFilter">确认</div>
-      </div>
+
+      <el-form :inline="true" :model="form" @keyup.enter.native="onFilter()">
+
+        <el-form-item label="审核时间" label-width="80px">
+          <el-date-picker class="dateRange"
+                          v-model="times"
+                          type="daterange"
+                          range-separator="至"
+                          start-placeholder="开始时间"
+                          end-placeholder="结束时间"
+                          value-format="yyyy-MM-dd"
+          >
+          </el-date-picker>
+        </el-form-item>
+
+        <br>
+        <el-form-item label="AID" label-width="80px">
+          <el-input v-model="form.aid" maxlength="11"></el-input>
+        </el-form-item>
+        <br>
+        <el-form-item label="设计师" label-width="80px">
+          <el-input v-model="form.nickName" maxlength="20"></el-input>
+        </el-form-item>
+        <br>
+        <el-form-item label="审核状态" label-width="80px">
+          <el-select v-model="form.status" filterable style="width: 250px">
+            <el-option v-for="(status, index) in statusList" :key="index" :label="status.name"
+                       :value="status.value"></el-option>
+          </el-select>
+        </el-form-item>
+
+
+        <br>
+        <el-form-item>
+          <el-button type="info" @click="onClear()" size="medium" style="width: 100px;">重置</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onFilter()" size="medium" style="width: 200px;margin-left: 8px">
+            确定
+          </el-button>
+        </el-form-item>
+
+      </el-form>
     </div>
     <div class="mask" @click="closeFilterBox"></div>
   </div>
@@ -40,25 +61,33 @@
       data: function () {
         return{
           form: this.onClear(),
+          times:[],
+          statusList:[
+            {value: 0, name: '全部'},
+            {value: 1, name: '待审核'},
+            {value: 2, name: '打回'},
+            {value: 3, name: '通过'},
+          ]
         }
       },
 
       methods: {
-        closeFilterBox: function () {
-          this.$emit("closeFilterBox");
-        },
-        onClear: function () {
+        onClear(){
           this.form = {
             aid: '',
             nickName: '',
-            time:  '',
-            status: 0
+            status: 0,
           };
+          this.times = [];
           return this.form;
         },
+        closeFilterBox(){
+          this.$emit("closeFilterBox");
+        },
         onFilter: function () {
+          this.form.begTime = this.times[0] || '';
+          this.form.endTime = this.times[1] || '';
           this.$emit("onFilter", this.form);
-          this.closeFilterBox();
         }
       }
     }
@@ -90,44 +119,6 @@
     margin-bottom: 30px;
   }
 
-  .body .footer {
-    margin-top: 15px;
-  }
-
-  .body .input_line {
-    display: inline-block;
-  }
-
-  .body .input_line label {
-    width: 65px;
-    padding-right: 10px;
-    display: inline-block;
-    text-align: right;
-    height: 55px;
-  }
-
-  .body .input_line input, select {
-    padding: 0 12px;
-    width: 226px;
-    height: 36px;
-    border: 0 #dbdbdb solid;
-    border-radius: 2px;
-    outline: none;
-    background: #f2f2f2;
-    color: #777777;
-    font-size: 16px;
-  }
-
-  .body .input_line select {
-    width: 250px;
-  }
-
-  body .input_line option {
-    background: white;
-    font-size: 16px;
-  }
-
-
   .btn {
     border-radius: 6px;
     width: 150px;
@@ -157,6 +148,22 @@
 
   .btn:nth-child(2):hover {
     background: rgba(43, 137, 251, 0.81);
+  }
+
+
+  .dateRange{
+    width: 250px!important;
+    height: 40px;
+    font-size: 40px;
+  }
+  .el-form-item__label{
+    line-height: 40px;
+    font-size: 16px!important;
+    user-select: none!important;
+  }
+  .el-input{
+    width: 250px!important;
+    font-size: 16px;
   }
 </style>
 

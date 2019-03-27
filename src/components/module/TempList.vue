@@ -57,11 +57,7 @@
       return {
         templateList: [],
         tempData: {},
-        designer: '',
-        status: 0,
-        tempId: '',
-        time: '',
-        title: '',
+        form:{}
       }
     },
     mixins: [Comm_Mixins, Pagination_Mixins2],
@@ -69,13 +65,24 @@
       showFilter: function () {
         this.isFilterVisible = true;
       },
-      closeFilterBox(){
+      closeFilterBox(form){
         this.isFilterVisible = false;
+        if(form.isSubmit){
+          this.designer = form.nickName;
+          this.status = form.status;
+          this.tempId = form.tempId;
+          this.begTime = form.begTime;
+          this.endTime = form.endTime;
+          this.title = form.title;
+          this.refreshTabData();
+        }
       },
-      onFilter: function () {
+      onFilter(form){
+        this.form = form;
+        this.isFilterVisible = false;
         this.refreshTabData();
-        this.isFilterVisible = !this.isFilterVisible;
       },
+
       showDetail: function (index) {
         console.log(index);
         let thiz = this;
@@ -107,11 +114,12 @@
           url: thiz.preUrl + "/getTemplateAuditList",
           type: 'get',
           data: {
-            designer: thiz.designer,
-            status: thiz.status,
-            tempId: thiz.tempId || 0,
-            time: thiz.time,
-            title: thiz.title,
+            designer: thiz.form.nickName,
+            title: thiz.form.title,
+            status: thiz.form.status || 0,
+            tempId: thiz.form.tempId || 0,
+            begTime: thiz.form.begTime,
+            endTime: thiz.form.endTime,
             distinct: true,
           },
           success: function (res) {
@@ -207,34 +215,4 @@
   }
 
 
-  .btn {
-    border-radius: 6px;
-    width: 150px;
-    height: 40px;
-    line-height: 40px; /*在div中让文字垂直居中,设置了div的高度,则相应设置文字的行高即可*/
-    border: 1px #dedede solid;
-    cursor: pointer;
-    display: inline-block;
-  }
-
-  .btn:nth-child(1) {
-    width: 110px;
-    background: #909399;
-    color: white;
-  }
-
-  .btn:nth-child(2) {
-    margin-left: 20px;
-    width: 190px;
-    background: #2b89fb;
-    color: white;
-  }
-
-  .btn:nth-child(1):hover {
-    background: rgba(144, 147, 153, 0.81);
-  }
-
-  .btn:nth-child(2):hover {
-    background: rgba(43, 137, 251, 0.81);
-  }
 </style>

@@ -6,8 +6,7 @@
         <span class="close_btn" @click="closeFilterBox">&#10006</span>
       </span>
       <hr>
-      <el-form :inline="true" :model="form" @keyup.enter.native="onSubmit()">
-
+      <el-form :inline="true" :model="form" @keyup.enter.native="onFilter()">
         <el-form-item label="审核时间" label-width="80px">
           <el-date-picker class="dateRange"
                           v-model="times"
@@ -46,7 +45,7 @@
           <el-button type="info" @click="onClear()" size="medium" style="width: 100px;">重置</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit()" size="medium" style="width: 200px;margin-left: 8px">
+          <el-button type="primary" @click="onFilter()" size="medium" style="width: 200px;margin-left: 8px">
             确定
           </el-button>
         </el-form-item>
@@ -63,9 +62,10 @@
       props: ['isVisible'],
       data(){
         return{
-          form:{},
+          form: this.onClear(),
           times: [],
           statusList:[
+            {value: 0, name: '全部'},
             {value: 1, name: '待审核'},
             {value: 2, name: '打回'},
             {value: 3, name: '通过'},
@@ -74,15 +74,23 @@
       },
       methods: {
         onClear(){
-          this.form = {};
-          this.times = []
-        },
-        onSubmit() {
-          this.form.begTime = this.times[0] || '';
-          this.form.endTime = this.times[1] || '';
+          this.form = {
+            nickName: '',
+            status: 0,
+            tempId: '',
+            title: '',
+          };
+          this.times = [];
+          return this.form;
         },
         closeFilterBox(){
+          this.form.isSubmit = false;
           this.$emit("closeFilterBox", this.form);
+        },
+        onFilter(){
+          this.form.begTime = this.times[0] || '';
+          this.form.endTime = this.times[1] || '';
+          this.$emit("onFilter", this.form);
         }
       }
     }
@@ -115,6 +123,41 @@
     margin-bottom: 30px;
   }
 
+
+  .btn {
+    border-radius: 6px;
+    width: 150px;
+    height: 40px;
+    line-height: 40px; /*在div中让文字垂直居中,设置了div的高度,则相应设置文字的行高即可*/
+    border: 1px #dedede solid;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn:nth-child(1) {
+    width: 110px;
+    background: #909399;
+    color: white;
+  }
+
+  .btn:nth-child(2) {
+    margin-left: 20px;
+    width: 190px;
+    background: #2b89fb;
+    color: white;
+  }
+
+  .btn:nth-child(1):hover {
+    background: rgba(144, 147, 153, 0.81);
+  }
+
+  .btn:nth-child(2):hover {
+    background: rgba(43, 137, 251, 0.81);
+  }
+
+
+
+
   .dateRange{
     width: 250px!important;
     height: 40px;
@@ -129,9 +172,6 @@
     width: 250px!important;
     font-size: 16px;
   }
-  /*.el-input__inner{*/
-    /*width: 250px;*/
-  /*}*/
 
 </style>
 

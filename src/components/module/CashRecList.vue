@@ -65,7 +65,7 @@
               if (res.success) {
                 let data = res.data;
                 thiz.cashRecList = data.list;
-                thiz.page.total = thiz.templateList.length;
+                thiz.page.total = thiz.cashRecList.length;
                 thiz.isLoad = false;
               } else {
                 thiz.$message.error(res.msg);
