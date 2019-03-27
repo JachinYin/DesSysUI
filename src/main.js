@@ -8,9 +8,9 @@ import router from './router'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-import CommTool from "./assets/CommJs";
-
 Vue.use(ElementUI);
+
+import CommTool from "./assets/CommJs";
 
 Vue.config.productionTip = false;
 

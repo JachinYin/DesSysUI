@@ -1,11 +1,11 @@
 <template>
-  <div class="tempList">
+  <div class="tempList" v-loading="isLoad" element-loading-text="数据加载中">
     <div class="head-box">
       <span class="filter" @click="showFilter()">筛选</span>
       <span class="static">统计数据</span>
     </div>
     <div class="table">
-      <el-table :data="templateList.slice(index, size)" border :height="609" tooltip-effect="light" v-loading="isLoad">
+      <el-table :data="templateList.slice(index, size)" border :height="609" tooltip-effect="light">
         <el-table-column align="center" label="模板ID" prop="tempId" width="125px"></el-table-column>
         <el-table-column align="center" label="模板标题" prop="title" width="245px"
                          show-overflow-tooltip></el-table-column>
@@ -39,51 +39,20 @@
     </div>
     <ShowDetail :is-visible="isDetailVisible" :temp-data="tempData" @closeDetailBox="closeDetailBox"
                 @refresh="refreshTabData"/>
-    <div class="filter_temp openHtml" v-if="isFilterVisible" v-cloak>
-      <div class="body">
-        <span class="title">
-          <span style="color:#2b89fb;">▌</span> 筛选条件
-          <span class="close_btn" @click="isFilterVisible = !isFilterVisible">&#10006</span>
-        </span>
-        <hr>
-        <span class="input_line">
-          <label>模板ID</label><input type="text" v-model="tempId">
-        </span>
-        <span class="input_line">
-          <label>设计师</label><input type="text" v-model="designer">
-        </span>
-        <span class="input_line">
-          <label>模板标题</label><input type="text" v-model="title">
-        </span>
-        <span class="input_line">
-          <label>审核时间</label><input type="text" v-model="time">
-        </span>
-        <span class="input_line">
-          <label>审核状态</label>
-          <select type="select" v-model="status">
-            <option value="1">待审核</option>
-            <option value="2">打回</option>
-            <option value="3">通过</option>
-          </select>
-          </span>
-        <br>
-        <div class="footer">
-          <div class="btn" @click="onClear">重置</div>
-          <div class="btn" @click="onFilter">确认</div>
-        </div>
-      </div>
-      <div class="mask" v-if="isFilterVisible"></div>
-    </div>
+
+    <!--打开筛选-->
+    <ShowTempFilterBox :is-visible="isFilterVisible" @closeFilterBox="closeFilterBox" @onFilter="onFilter"/>
   </div>
 </template>
 
 <script>
   import {Comm_Mixins, Pagination_Mixins2} from "../../assets/mixins";
   import ShowDetail from "./openvue/templateList/ShowTempDetail";
+  import ShowTempFilterBox from "@/components/module/openvue/templateList/ShowTempFilterBox";
 
   export default {
     name: "TempList",
-    components: {ShowDetail},
+    components: {ShowTempFilterBox, ShowDetail},
     data() {
       return {
         templateList: [],
@@ -100,12 +69,8 @@
       showFilter: function () {
         this.isFilterVisible = true;
       },
-      onClear: function () {
-        this.designer = '';
-        this.status = 0;
-        this.tempId = '';
-        this.time = '';
-        this.title = '';
+      closeFilterBox(){
+        this.isFilterVisible = false;
       },
       onFilter: function () {
         this.refreshTabData();
