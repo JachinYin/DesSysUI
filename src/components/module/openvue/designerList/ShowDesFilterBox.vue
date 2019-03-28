@@ -1,5 +1,5 @@
 <template>
-  <div class="filter_temp openHtml" v-if="isVisible" v-cloak>
+  <div class="des_filter openHtml" v-if="isVisible" v-cloak>
     <div class="body">
       <span class="title">
         <span style="color:#2b89fb;">▌</span> 筛选条件
@@ -16,7 +16,8 @@
                           range-separator="至"
                           start-placeholder="开始时间"
                           end-placeholder="结束时间"
-                          value-format="yyyy-MM-dd"
+                          value-format="yyyy-MM-dd HH:mm:ss"
+                          :default-time="['00:00:00', '23:59:59']"
           >
           </el-date-picker>
         </el-form-item>
@@ -55,41 +56,12 @@
 </template>
 
 <script>
+    import {Filter_Mixins} from "@/api/comm/mixins";
+
     export default {
       name: "ShowDesFilterBox",
       props: ['isVisible'],
-      data: function () {
-        return{
-          form: this.onClear(),
-          times:[],
-          statusList:[
-            {value: 0, name: '全部'},
-            {value: 1, name: '待审核'},
-            {value: 2, name: '打回'},
-            {value: 3, name: '通过'},
-          ]
-        }
-      },
-
-      methods: {
-        onClear(){
-          this.form = {
-            aid: '',
-            nickName: '',
-            status: 0,
-          };
-          this.times = [];
-          return this.form;
-        },
-        closeFilterBox(){
-          this.$emit("closeFilterBox");
-        },
-        onFilter: function () {
-          this.form.begTime = this.times[0] || '';
-          this.form.endTime = this.times[1] || '';
-          this.$emit("onFilter", this.form);
-        }
-      }
+      mixins: [Filter_Mixins],
     }
 </script>
 

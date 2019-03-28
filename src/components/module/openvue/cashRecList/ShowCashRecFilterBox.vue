@@ -1,13 +1,15 @@
 <template>
-  <div class="temp_filter openHtml" v-if="isVisible">
+  <div class="cashRec_filter openHtml" v-if="isVisible" v-cloak>
     <div class="body">
       <span class="title">
         <span style="color:#2b89fb;">▌</span> 筛选条件
         <span class="close_btn" @click="closeFilterBox">&#10006</span>
       </span>
       <hr>
+
       <el-form :inline="true" :model="form" @keyup.enter.native="onFilter()">
-        <el-form-item label="审核时间" label-width="80px">
+
+        <el-form-item label="提现时间" label-width="80px">
           <el-date-picker class="dateRange"
                           v-model="times"
                           type="daterange"
@@ -21,25 +23,9 @@
         </el-form-item>
 
         <br>
-        <el-form-item label="模板ID" label-width="80px">
-          <el-input v-model="form.tempId" maxlength="11"></el-input>
+        <el-form-item label="AID" label-width="80px">
+          <el-input v-model="form.aid" maxlength="11"></el-input>
         </el-form-item>
-        <br>
-        <el-form-item label="模板标题" label-width="80px">
-          <el-input v-model="form.title" maxlength="20"></el-input>
-        </el-form-item>
-        <br>
-        <el-form-item label="设计师" label-width="80px">
-          <el-input v-model="form.nickName" maxlength="20"></el-input>
-        </el-form-item>
-        <br>
-        <el-form-item label="审核状态" label-width="80px">
-          <el-select v-model="form.status" filterable style="width: 250px">
-            <el-option v-for="(status, index) in statusList" :key="index" :label="status.name"
-                       :value="status.value"></el-option>
-          </el-select>
-        </el-form-item>
-
 
         <br>
         <el-form-item>
@@ -58,19 +44,18 @@
 </template>
 
 <script>
-    import {Filter_Mixins} from "@/api/comm/mixins";
+  import {Filter_Mixins} from "@/api/comm/mixins";
 
-    export default {
-      name: "ShowTempFilterBox",
-      props: ['isVisible'],
-      mixins: [Filter_Mixins]
-    }
+  export default {
+    name: "ShowCashRecFilterBox",
+    props: ['isVisible'],
+    mixins: [Filter_Mixins]
+  }
 </script>
 
 <style scoped>
   .body {
-    height: 470px;
-    width: 400px;
+    height: 280px;
   }
 
   .body .title {
@@ -93,7 +78,6 @@
     border-bottom: 1px #bfbfbf4a solid;
     margin-bottom: 30px;
   }
-
 
   .btn {
     border-radius: 6px;
@@ -127,8 +111,6 @@
   }
 
 
-
-
   .dateRange{
     width: 250px!important;
     height: 40px;
@@ -146,4 +128,9 @@
 
 </style>
 
+<style>
 
+  .el-date-range-picker{
+    width: 520px;
+  }
+</style>
