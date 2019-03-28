@@ -109,7 +109,7 @@
 </template>
 
 <script>
-    import ShowRefuseReason from "./ShowRefuseReason";
+    import ShowRefuseReason from "@/components/module/openvue/designerList/ShowRefuseReason";
     export default {
       name: "ShowDesFilterBox",
       components: {ShowRefuseReason},
@@ -340,28 +340,5 @@
   .footer .close_btn:hover{
     opacity: 0.8;
     border: 1px #a6a6a9 solid;
-  }
-
-  ::-webkit-scrollbar
-  {
-    width: 4px;
-    height: 4px;
-    background-color: #F5F5F5;
-  }
-
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track
-  {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    border-radius: 10px;
-    background-color: #F5F5F5;
-  }
-
-  /*定义滑块 内阴影+圆角*/
-  ::-webkit-scrollbar-thumb
-  {
-    border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(196, 196, 196, 0.3);
-    background-color: #7d7d7d;
   }
 </style>
