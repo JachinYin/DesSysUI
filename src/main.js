@@ -8,9 +8,14 @@ import router from './router'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
+Vue.use(ElementUI); //全局使用 Element
 
-import CommTool from "./assets/CommJs";
+import './api/icon/iconfont'
+import IconSvg from "./components/comm/IconSvg"
+Vue.component('icon', IconSvg); // 全局注册图标组件
+
+import CommTool from "./api/comm/CommJs";
+
 
 Vue.config.productionTip = false;
 

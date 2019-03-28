@@ -1,7 +1,10 @@
 <template>
   <div class="tempList" v-loading="isLoad" element-loading-text="数据加载中">
     <div class="head-box">
-      <span class="filter" @click="showFilter()">筛选</span>
+      <span class="filter" @click="showFilter()">
+        <icon i-class="filter"></icon>
+        筛选
+      </span>
       <span class="static">统计数据</span>
     </div>
     <div class="table">
