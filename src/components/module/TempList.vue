@@ -37,6 +37,7 @@
       >
       </el-pagination>
     </div>
+
     <ShowDetail :is-visible="isDetailVisible" :temp-data="tempData" @closeDetailBox="closeDetailBox"
                 @refresh="refreshTabData"/>
 
@@ -46,8 +47,8 @@
 </template>
 
 <script>
-  import {Comm_Mixins, Pagination_Mixins2} from "../../assets/mixins";
-  import ShowDetail from "./openvue/templateList/ShowTempDetail";
+  import {Comm_Mixins, Pagination_Mixins2} from "@/api/comm/mixins";
+  import ShowDetail from "@/components/module/openvue/templateList/ShowTempDetail";
   import ShowTempFilterBox from "@/components/module/openvue/templateList/ShowTempFilterBox";
 
   export default {
@@ -67,15 +68,6 @@
       },
       closeFilterBox(form){
         this.isFilterVisible = false;
-        if(form.isSubmit){
-          this.designer = form.nickName;
-          this.status = form.status;
-          this.tempId = form.tempId;
-          this.begTime = form.begTime;
-          this.endTime = form.endTime;
-          this.title = form.title;
-          this.refreshTabData();
-        }
       },
       onFilter(form){
         this.form = form;

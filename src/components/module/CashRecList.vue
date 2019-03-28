@@ -14,7 +14,7 @@
         <el-table-column align="center" label="剩余可提现金额" prop="balance" width="200px"></el-table-column>
         <el-table-column align="center" label="操作" width="125px">
           <template slot-scope="scope">
-            <span @click="showDetail(scope.$index)" class="showDetail_btn">查看</span>
+            <span @click="showCashDetailBox(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -31,35 +31,56 @@
       </el-pagination>
     </div>
 
+
+    <ShowCashRecFilterBox :is-visible="isFilterVisible" @closeFilterBox="closeFilterBox" @onFilter="onFilter"></ShowCashRecFilterBox>
+    <ShowCashDetailBox :is-visible="isCashVisible" @closeBox="closeCashDetailBox"></ShowCashDetailBox>
+
   </div>
 </template>
 
 <script>
-    import {Pagination_Mixins2} from "../../assets/mixins";
+    import {Pagination_Mixins2, Comm_Mixins} from "@/api/comm/mixins";
+    import ShowCashDetailBox from "@/components/module/openvue/cashDesList/ShowCashDetailBox";
+    import ShowCashRecFilterBox from "@/components/module/openvue/cashRecList/ShowCashRecFilterBox";
 
     export default {
       name: "CashRecList",
-      mixins:[Pagination_Mixins2],
+      components: {ShowCashRecFilterBox, ShowCashDetailBox},
+      mixins:[Pagination_Mixins2, Comm_Mixins],
       data(){
         return{
-          cashRecList:[]
+          cashRecList:[],
+          form:{},
         }
       },
       methods:{
+        showCashDetailBox: function(){
+          this.isCashVisible = true;
+        },
+        closeCashDetailBox: function(){
+          this.isCashVisible = false;
+        },
+
+        showFilter: function(){
+          this.isFilterVisible = true;
+        },
+        closeFilterBox: function(){
+          this.isFilterVisible = false;
+        },
+        onFilter: function(form){
+          this.form = form;
+          this.closeFilterBox();
+          this.refreshTabData();
+        },
 
         refreshTabData: function () {
           let thiz = this;
           $.ajax({
             url: thiz.preUrl + "/getCashFlowShowList",
-            type: 'get',
             data: {
-              // aid: thiz.aid,
-              // designer: thiz.designer,
-              // status: thiz.status,
-              // tempId: thiz.tempId || 0,
-              // title: thiz.title,
-              time: thiz.time,
-              // distinct: true,
+              aid: thiz.form.aid || 0,
+              begTime: thiz.form.begTime,
+              endTime: thiz.form.endTime,
             },
             success: function (res) {
               if (res.success) {
@@ -79,8 +100,6 @@
             }
           });
         },
-
-
       },
       created() {
         this.refreshTabData();

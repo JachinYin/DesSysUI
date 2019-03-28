@@ -48,10 +48,10 @@
 </template>
 
 <script>
-  import Pagination from "../../components/util/Pagination";
-  import {Comm_Mixins,Pagination_Mixins2} from "../../assets/mixins";
-  import ShowDesDetailBox from "./openvue/designerList/ShowDesDetailBox";
-  import ShowDesFilterBox from "./openvue/designerList/ShowDesFilterBox";
+  import Pagination from "@/components/util/Pagination";
+  import {Comm_Mixins,Pagination_Mixins2} from "@/api/comm/mixins";
+  import ShowDesDetailBox from "@/components/module/openvue/designerList/ShowDesDetailBox";
+  import ShowDesFilterBox from "@/components/module/openvue/designerList/ShowDesFilterBox";
 
   export default {
     name: "DesList",
