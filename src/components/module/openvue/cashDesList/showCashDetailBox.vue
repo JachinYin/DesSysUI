@@ -408,7 +408,7 @@
   .inner .right .right-inner {
     width: 380px;
     height: 480px;
-    padding: 0 15px 0 30px;
+    padding: 20px 15px 0 30px;
     overflow: auto;
   }
   .inner .right .right-inner .item {

@@ -14,7 +14,8 @@ import './api/icon/iconfont'
 import IconSvg from "./components/comm/IconSvg"
 Vue.component('icon', IconSvg); // 全局注册图标组件
 
-import CommTool from "./api/comm/CommJs";
+import cookieUtil from "./api/comm/CommJs";
+Vue.prototype.$cookieUtil = cookieUtil;
 
 
 Vue.config.productionTip = false;
@@ -23,9 +24,6 @@ Vue.config.productionTip = false;
 Vue.prototype.preUrl = "http://localhost:8088";
 Vue.prototype.reg_Price = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
 
-// 定义JS全局变量
-
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
@@ -33,30 +31,12 @@ new Vue({
   template: '<App/>'
 });
 
-$.ajaxSetup({
-  dataType: "json",
-  // cache: false,
-  headers: {
-    "TOKEN": CommTool.getCookie("TOKEN")
-  },
-  xhrFields: {
-    withCredentials: true
-  },
-  crossDomain: true,
-  // complete: function(xhr) {
-  //   //token过期，则跳转到登录页面
-  //   if(xhr.responseJSON.code == 401){
-  //     parent.location.href = baseURL + 'login.html';
-  //   }
-  // }
-});
-
-/*router.beforeEach((to, from, next) => {
+router.beforeEach((to, from, next) => {
   if (!to.meta.requireAuth) {  // 判断该路由是否需要登录权限
-    if (CommTool.getCookie("TOKEN")) {  // 通过vuex state获取当前的token是否存在
-      next();
+    if (cookieUtil.getCookie("TOKEN")) {  // 获取当前的token是否存在
+      next(); //  存在Cookie则继续
     }
-    else {
+    else { // 否则跳转登陆
       next({
         path: '/login',
         query: {
@@ -68,18 +48,27 @@ $.ajaxSetup({
   else {
     next();
   }
-});*/
+});
 
-
-// $(window).keydown(function (e) {
-//   if (e.keyCode == '116') {
-//     let url = document.location.href;
-//     let urls = url.split("/");
-//     let length = urls.length;
-//     if(length > 1) url = '/' + urls[length-1];
-//     else url = '/';
-//     console.log(url);
-//     Vue.$router.push(url);
-//     return false;
-//   }
-// });
+/*全局ajax配置*/
+$.ajaxSetup({
+  dataType: "json",
+  cache: false,
+  // headers: {
+  //   TOKEN: cookieUtil.getCookie("TOKEN")
+  // },
+  beforeSend(xhr){
+    // console.log("设置TOKEN");
+    xhr.setRequestHeader("TOKEN", cookieUtil.getCookie("TOKEN"));
+  },
+  xhrFields: {
+    withCredentials: true
+  },
+  crossDomain: true,
+  complete: function(xhr) {
+    //token过期，则跳转到登录页面
+    if(xhr.code === 101){
+      parent.location.href = '/login';
+    }
+  }
+});

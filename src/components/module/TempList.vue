@@ -107,7 +107,6 @@
         let thiz = this;
         $.ajax({
           url: thiz.preUrl + "/getTemplateAuditList",
-          type: 'get',
           data: {
             designer: thiz.form.nickName,
             title: thiz.form.title,
@@ -116,6 +115,9 @@
             begTime: thiz.form.begTime,
             endTime: thiz.form.endTime,
             distinct: true,
+          },
+          beforeSend(xhr){
+            xhr.setRequestHeader("TOKEN", thiz.$cookieUtil.getCookie("TOKEN"));
           },
           success: function (res) {
             if (res.success) {

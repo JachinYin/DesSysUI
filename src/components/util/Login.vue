@@ -14,23 +14,19 @@
 
           </div>
 
-          <el-form ref="form" :model="form" label-width="40px">
-            <el-form-item label="账户" @keyup.enter.native="login()">
+          <el-form ref="form" :model="form" label-width="40px" @keyup.enter.native="login()">
+            <el-form-item label="账户">
               <el-input v-model="form.name"></el-input>
             </el-form-item>
-            <el-form-item label="密码" @keyup.enter.native="login()">
+            <el-form-item label="密码">
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item>
-              <!--<el-checkbox-group v-model="form.rememberMe">-->
-                <el-checkbox label="记住我" v-model="form.rememberMe"></el-checkbox>
-              <!--</el-checkbox-group>-->
-              <!--<span>记住我</span>-->
+            <!--<el-form-item>-->
               <el-button type="primary" @click="login()">登 陆</el-button>
-            </el-form-item>
+            <!--</el-form-item>-->
           </el-form>
         </div>
-        <div class="foot"><span>还没有账号？点击<span class="reg" @click="register">注册</span></span></div>
+        <!--<div class="foot"><span>还没有账号？点击<span class="reg" @click="register">注册</span></span></div>-->
       </div>
       <div class="mask"></div>
     </div>
@@ -50,55 +46,51 @@
           }
       },
       methods:{
-          login: function () {
-            // this.$message.success("成功");
-            // console.log(this.form);
-            if(this.form.name === ''){
-              this.$message.warning("输入用户名");
-              return;
-            }
-            if(this.form.password === ''){
-              this.$message.success("输入密码");
-              return;
-            }
-
-            let thiz = this;
-            $.ajax({
-              url: thiz.preUrl + '/login',
-              data:{
-                name: thiz.form.name,
-                password: thiz.form.password,
-                rememberMe: thiz.form.rememberMe,
-              },
-              success: function (res) {
-                // 成功登陆
-                if(res.success){
-
-                  thiz.$router.push("/tempList");
-                  console.log(document.cookie);
-                }
-                // 登陆失败
-                else{
-                  thiz.$message.error(res.msg);
-                }
-              },
-              error: function (res) {
-                // thiz.$message.error("服务繁忙，请稍后重试");
-                thiz.$message.error(res.msg + "233");
-                console.log(res);
-              }
-            })
-
-          },
-          register: function () {
-           this.$router.push("/register")
+        login: function () {
+          // this.$message.success("成功");
+          // console.log(this.form);
+          if (this.form.name === '') {
+            this.$message.warning("输入用户名");
+            return;
           }
+          if (this.form.password === '') {
+            this.$message.success("输入密码");
+            return;
+          }
+
+          let thiz = this;
+          $.ajax({
+            url: thiz.preUrl + '/login',
+            data: {
+              userName: thiz.form.name,
+              password: thiz.form.password,
+            },
+            type: 'post',
+            success: function (res) {
+              // 成功登陆
+              if (res.success) {
+                thiz.$router.push("/tempList");
+              }
+              // 登陆失败
+              else {
+                thiz.$message.error(res.msg);
+              }
+            },
+            error: function () {
+              thiz.$message.error("网络繁忙，请稍后重试~");
+            }
+          })
+
+        },
+        register: function () {
+          this.$router.push("/register")
+        },
       },
       created() {
-          let TOKEN = this.$CommTool.getCookie("TOKEN");
-          if(TOKEN !== ""){
-            this.$router.push("/tempList");
-          }
+          // let TOKEN = this.$CommTool.getCookie("TOKEN");
+          // if(TOKEN !== ""){
+          //   this.$router.push("/tempList");
+          // }
       }
     }
 </script>
@@ -168,7 +160,7 @@
     margin: auto;
   }
   .el-button{
-    /*width: 100%;*/
+    width: 100%;
   }
 
 </style>

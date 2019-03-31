@@ -17,19 +17,29 @@
             <div class="container">
               <img src="../../assets/timg.png" alt="logo">
               <div class="form">
-                <el-form ref="form" :model="form" label-width="40px">
+                <el-form ref="form" :model="form" label-width="40px" @keyup.enter.native="onRegister">
                   <el-form-item label="账户">
                     <el-input
                       v-model="form.username"
-                      placeholder="请输入账号(字母数字下划线组合)"
-                      @input="validate()"
+                      placeholder="请输入账号(6-20位字母数字)"
+                      @input="limitIn(true)"
                     ></el-input>
                   </el-form-item>
                   <el-form-item label="密码">
-                    <el-input type="password" v-model="form.password" placeholder="请输入密码(字母数字下划线组合)"></el-input>
+                    <el-input
+                      type="password"
+                      v-model="form.password"
+                      placeholder="请输入密码(6-20位)"
+                      @input="limitIn(false)"
+                    ></el-input>
                   </el-form-item>
                   <el-form-item label="密码">
-                    <el-input type="password" v-model="form.rePassword" placeholder="请确认密码(字母数字下划线组合)"></el-input>
+                    <el-input
+                      type="password"
+                      v-model="form.rePassword"
+                      placeholder="请确认密码(字母数字下划线组合)"
+                      @input="limitIn(false)"
+                    ></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" @click="onRegister()">注 册</el-button>
@@ -73,6 +83,10 @@
             this.$message.warning("请输入确认密码");
             return;
           }
+          if(form.password.length < 6){
+            this.$message.warning("密码长度最小6位");
+            return;
+          }
           if(!reg.test(form.username)){
             this.$message.error("账户包含非法字符");
             return;
@@ -86,12 +100,36 @@
             this.$message.error("两次密码不一致");
             return;
           }
-          this.$message.info("注册成功");
+          let thiz = this;
+          $.ajax({
+            url: thiz.preUrl + "/register",
+            data: {
+              userName: form.username,
+              password: form.password,
+            },
+            success: function (res) {
+              if(res.success){
+                thiz.$message.success("注册成功");
+                thiz.$router.push("/login");
+              }
+              else{
+                thiz.$message.error(res.msg);
+              }
+            },
+            error: function () {
+              thiz.$message.error("网络繁忙，请稍后重试~");
+            }
+          });
+
         },
-        validate: function () {
-          // console.log(this.form.username);
-          let value = this.form.username;
-          if(value.length > 20) this.form.username = value.slice(0,20);
+        limitIn: function (isUsername) {
+          if(isUsername) {
+            let value = this.form.username;
+            if (value.length > 20) this.form.username = value.slice(0, 20);
+          }else{
+            let value = this.form.password;
+            if (value.length > 20) this.form.password = value.slice(0, 20);
+          }
         }
       }
     }
