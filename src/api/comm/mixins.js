@@ -85,7 +85,7 @@ export const Filter_Mixins = {
       this.$emit("closeFilterBox");
     },
     onFilter: function () {
-      this.form.begTime = this.times[1] || '';
+      this.form.begTime = this.times[0] || '';
       this.form.endTime = this.times[1] || '';
       this.$emit("onFilter", this.form);
     }
