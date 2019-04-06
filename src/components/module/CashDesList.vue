@@ -15,7 +15,7 @@
         <el-table-column align="center" label="可提现金额" prop="balance" width="200px"></el-table-column>
         <el-table-column align="center" label="操作" width="125px">
           <template slot-scope="scope">
-            <span @click="showCashDetailBox(scope.$index)" class="showDetail_btn">查看</span>
+            <span @click="showCashDesDetailBox(scope.$index)" class="showDetail_btn">查看</span>
           </template>
         </el-table-column>
       </el-table>
@@ -34,16 +34,16 @@
     </div>
 
     <ShowCashDesFilterBox :is-visible="isFilterVisible" @closeFilterBox="closeFilterBox" @onFilter="onFilter"></ShowCashDesFilterBox>
-    <ShowCashDetailBox :is-visible="isCashVisible" @closeBox="closeCashDetailBox"></ShowCashDetailBox>
+    <ShowCashDetailBox :is-visible="isCashVisible" :aid="aid" @closeBox="closeCashDetailBox"></ShowCashDetailBox>
 
   </div>
 </template>
 
 <script>
-    import Pagination from "@/components/util/Pagination";
-    import ShowCashDesFilterBox from "@/components/module/openvue/cashDesList/ShowCashDesFilterBox";
-    import ShowCashDetailBox from "@/components/module/openvue/cashDesList/ShowCashDetailBox";
-    import {Comm_Mixins, Pagination_Mixins2} from "@/api/comm/mixins";
+    import Pagination from "../../components/util/Pagination";
+    import ShowCashDesFilterBox from "../../components/module/openvue/cashDesList/ShowCashDesFilterBox";
+    import ShowCashDetailBox from "../../components/module/openvue/cashDesList/ShowCashDetailBox";
+    import {Comm_Mixins, Pagination_Mixins2} from "../../api/comm/mixins";
 
     export default {
       name: "CashDesList",
@@ -52,11 +52,13 @@
       data(){
         return{
           cashDesList:[],
-          form:{}
+          form:{},
+          aid: 0,
         }
       },
       methods:{
-        showCashDetailBox: function(){
+        showCashDesDetailBox: function(index){
+          this.aid = this.cashDesList[index].aid;
           this.isCashVisible = true;
         },
         closeCashDetailBox: function(){

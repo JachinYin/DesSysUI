@@ -9,278 +9,73 @@
       <div class="inner">
         <div class="left">
           <div class="left-inner">
-            <div class="money-surplus">
+            <div class="money_balance">
               <span class="money">
-                ￥65,822.1
+                ￥{{desData.balance||0}}
               </span>
               <br>
               <span class="tip">可提现余额</span>
             </div>
             <div class="money-other">
               <div class="money-income">
-                <div class="money">￥66,679.1</div>
+                <div class="money">￥{{desData.totalPrice||0}}</div>
                 <div class="tip">全部收入</div>
               </div>
               <div class="split"></div>
               <div class="money-balance">
-                <div class="money">￥857</div>
+                <div class="money">￥{{desData.totalWithdraw||0}}</div>
                 <div class="tip">已提现金额</div>
               </div>
-              <div class="clear"></div>
+              <div class="clear" style="clear:both;width: 100%; height: 10px;"></div>
             </div>
 
-            <div
-              class="el-table el-table--fit el-table--border el-table--enable-row-hover el-table--enable-row-transition"
-              style="width: 340px; border-radius: 8px; box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 10px 0px;">
-              <div class="hidden-columns">
-                <div style="text-align: center;"></div>
-                <div></div>
-              </div>
-              <div class="el-table__header-wrapper">
-                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 338px;">
-                  <colgroup>
-                    <col name="el-table_1_column_1" width="169">
-                    <col name="el-table_1_column_2" width="169">
-                    <col name="gutter" width="0">
-                  </colgroup>
-                  <thead class="has-gutter">
-                  <tr class="">
-                    <th colspan="1" rowspan="1" class="el-table_1_column_1  is-center   is-leaf">
-                      <div class="cell">提现金额</div>
-                    </th>
-                    <th colspan="1" rowspan="1" class="el-table_1_column_2  is-center   is-leaf">
-                      <div class="cell">提现时间</div>
-                    </th>
-                    <th class="gutter" style="width: 0px; display: none;"></th>
-                  </tr>
-                  </thead>
-                </table>
-              </div>
-              <div class="el-table__body-wrapper is-scrolling-none">
-                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 338px;">
-                  <colgroup>
-                    <col name="el-table_1_column_1" width="169">
-                    <col name="el-table_1_column_2" width="169">
-                  </colgroup>
-                  <tbody>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">10</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-08 18:43</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">66</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-04 18:05</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">100</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-04 15:43</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">666</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-04 15:39</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">5</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-03 09:47</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">10</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-02 16:58</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">10</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-02 16:58</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">10</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-02 16:58</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_1_column_1 is-center ">
-                      <div class="cell">10</div>
-                    </td>
-                    <td class="el-table_1_column_2 is-center ">
-                      <div class="cell">2019-01-02 16:58</div>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="el-table__column-resize-proxy" style="display: none;"></div>
+            <div class="cashRecTable table">
+              <el-table :data="cashRecList">
+                <el-table-column label="提现金额(元)" prop="price" align="center"></el-table-column>
+                <el-table-column label="提现时间" prop="time" align="center"></el-table-column>
+              </el-table>
             </div>
           </div>
         </div>
         <div class="info right">
           <div class="right-inner">
             <br>
-            <div class="item"><span class="name">企业AID</span> <span class="value">9858936</span></div>
-            <div class="item"><span class="name">昵称</span> <span class="value">勋的复古咖啡馆法国巴黎新加坡</span></div>
-            <div class="item"><span class="name">联系手机</span> <span class="value">15913133927</span></div>
-            <div class="item"><span class="name">真实姓名</span> <span class="value">彭文勋</span></div>
-            <div class="item"><span class="name">联系QQ</span> <span class="value">766691498</span></div>
-            <div class="el-table el-table--fit el-table--enable-row-hover el-table--enable-row-transition"
-                 style="width: 370px; border-radius: 8px; box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 10px 0px;">
-              <div class="hidden-columns">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-              <div class="el-table__header-wrapper">
-                <table cellspacing="0" cellpadding="0" border="0" class="el-table__header" style="width: 370px;">
-                  <colgroup>
-                    <col name="el-table_2_column_3" width="70">
-                    <col name="el-table_2_column_4" width="70">
-                    <col name="el-table_2_column_5" width="115">
-                    <col name="el-table_2_column_6" width="115">
-                    <col name="gutter" width="0">
-                  </colgroup>
-                  <thead class="has-gutter">
-                  <tr class="">
-                    <th colspan="1" rowspan="1" class="el-table_2_column_3  is-center   is-leaf">
-                      <div class="cell">作品ID</div>
-                    </th>
-                    <th colspan="1" rowspan="1" class="el-table_2_column_4  is-center   is-leaf">
-                      <div class="cell">产品</div>
-                    </th>
-                    <th colspan="1" rowspan="1" class="el-table_2_column_5  is-center   is-leaf">
-                      <div class="cell">作品名称</div>
-                    </th>
-                    <th colspan="1" rowspan="1" class="el-table_2_column_6  is-center   is-leaf">
-                      <div class="cell">模板收入</div>
-                    </th>
-                    <th class="gutter" style="width: 0px; display: none;"></th>
-                  </tr>
-                  </thead>
-                </table>
-              </div>
-              <div class="el-table__body-wrapper is-scrolling-none">
-                <table cellspacing="0" cellpadding="0" border="0" class="el-table__body" style="width: 370px;">
-                  <colgroup>
-                    <col name="el-table_2_column_3" width="70">
-                    <col name="el-table_2_column_4" width="70">
-                    <col name="el-table_2_column_5" width="115">
-                    <col name="el-table_2_column_6" width="115">
-                  </colgroup>
-                  <tbody>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">55</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">快乐是什么 你懂快乐吗？</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">12</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">118</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">我的微传单</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">0</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">56</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">我的微传单</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">1.1</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">54</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">我的微传单</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">66666</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">53</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">我的微传单</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">0</div>
-                    </td>
-                  </tr>
-                  <tr class="el-table__row">
-                    <td class="el-table_2_column_3 is-center ">
-                      <div class="cell">52</div>
-                    </td>
-                    <td class="el-table_2_column_4 is-center ">
-                      <div class="cell">微传单</div>
-                    </td>
-                    <td class="el-table_2_column_5 is-center ">
-                      <div class="cell">春节快乐！happynewyear</div>
-                    </td>
-                    <td class="el-table_2_column_6 is-center ">
-                      <div class="cell">0</div>
-                    </td>
-                  </tr><!----></tbody>
-                </table><!----><!----></div><!----><!----><!----><!---->
-              <div class="el-table__column-resize-proxy" style="display: none;"></div>
+            <div class="item">
+              <span class="name">企业AID</span>
+              <span class="value">{{desData.aid}}</span>
+            </div>
+            <div class="item">
+              <span class="name">昵称</span>
+              <span class="value">{{desData.nickName}}</span>
+            </div>
+            <div class="item">
+              <span class="name">联系手机</span>
+              <span class="value">{{desData.phone}}</span>
+            </div>
+            <div class="item">
+              <span class="name">真实姓名</span>
+              <span class="value">{{desData.realName}}</span>
+            </div>
+            <div class="item">
+              <span class="name">联系微信</span>
+              <span class="value">{{desData.weChat}}</span>
+            </div>
+            <div class="item">
+              <span class="name">联系QQ</span>
+              <span class="value">{{desData.qq}}</span>
+            </div>
+            <div class="cashTempTable table" style="width: 350px;">
+              <el-table :data="cashTempList" tooltip-effect="light">
+                <el-table-column label="模板ID" prop="tempId" align="center" width="68px"></el-table-column>
+                <el-table-column label="模板标题" prop="title" align="center" width="100px" show-overflow-tooltip></el-table-column>
+                <el-table-column label="金额" prop="price" align="center" width="80px">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.price < 0" style="color: #c15c0d">{{scope.row.price}}</span>
+                    <span v-if="scope.row.price > 0" style="color: #41C26E">{{scope.row.price}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作时间" prop="time" align="center" width="100px"></el-table-column>
+              </el-table>
             </div>
           </div>
         </div>
@@ -293,12 +88,96 @@
 <script>
   export default {
     name: "ShowCashDetailBox",
-    props: ['isVisible'],
+    props: ['isVisible', 'aid'],
+    data: function () {
+      return{
+        desData: {},
+        cashRecList: [],
+        cashTempList: [],
+      }
+    },
     methods: {
-      closeBox(){
+      closeBox() {
         this.$emit("closeBox");
       },
+      // 获取设计师信息
+      getDesData() {
+        let that = this;
+        $.ajax({
+          url: that.preUrl + '/getDesignerInfo',
+          data:{
+            aid: that.aid || 0,
+          },
+          success: function(res){
+            if(res.success){
+              that.desData = res.data.desData;
+            }else{
+              that.$message.error(res.msg);
+            }
+          },
+          error: function(){
+            that.$message.error("网络繁忙，请稍后重试~");
+          }
+        })
+      },
+      // 获取提现记录列表(左边的表)
+      getCashRecList() {
+        let that = this;
+        $.ajax({
+          url: that.preUrl + '/getCashFlowShowList',
+          data:{
+            aid: that.aid || 0,
+            type: 2,
+          },
+          success: function(res){
+            if(res.success){
+              that.cashRecList = res.data.list;
+            }else{
+              that.$message.error(res.msg);
+            }
+          },
+          error: function(){
+            that.$message.error("网络繁忙，请稍后重试~");
+          }
+        })
+      },
+      // 获取收入记录列表(右边的表)
+      getCashTempList() {
+        let that = this;
+      },
 
+      getCashDetail(){
+        let that = this;
+        $.ajax({
+          url: that.preUrl + '/getCashDetail',
+          data:{
+            aid: that.aid || 0,
+          },
+          success: function(res){
+            if(res.success){
+              that.desData = res.data.desData;
+              that.cashRecList = res.data.cashRecList;
+              that.cashTempList = res.data.cashTempList;
+            }else{
+              that.$message.error(res.msg);
+            }
+          },
+          error: function(){
+            that.$message.error("网络繁忙，请稍后重试~");
+          }
+        })
+      }
+    },
+    watch:{
+      isVisible(){
+        if(this.isVisible){
+          this.getCashDetail();
+          // this.getDesData();
+          // this.getCashRecList();
+          // this.getCashTempList();
+        }
+
+      }
     }
   }
 </script>
@@ -355,16 +234,15 @@
     overflow: auto;
     margin: auto;
   }
-  .inner .left .left-inner .money-surplus {
+  .inner .left .left-inner .money_balance {
     margin-top: 40px;
     text-align: center;
   }
-  .inner .left .left-inner .money-surplus .money {
+  .inner .left .left-inner .money_balance .money {
     font-size: 30px;
     color: #ff7f29;
     line-height: 27px;
   }
-
   .inner .left .left-inner .money-other {
     width: 360px;
     margin-top: 38px;
@@ -435,6 +313,12 @@
   /* /设计师信息-右边部分 */
 
   /* 表格 */
+  .inner .el-table{
+    border-radius: 8px;
+    border: 1px #f2f2f2 solid;
+    box-shadow: rgba(153, 153, 153, 0.2) 0px 2px 10px 0px;
+
+  }
   .inner .el-table th {
     background-color: #ffffff;
   }

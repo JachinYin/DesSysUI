@@ -111,7 +111,7 @@
       refreshDesList: function () {
         let thiz = this;
         $.ajax({
-          url: thiz.preUrl + "/getDesignerAuditList",
+          url: thiz.preUrl + "/getDesignersAuditList",
           data: {
             aid: thiz.form.aid || 0,
             status: thiz.form.status,

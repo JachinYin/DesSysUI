@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import {Filter_Mixins} from "@/api/comm/mixins";
+  import {Filter_Mixins} from "../../../../api/comm/mixins";
 
   export default {
     name: "ShowCashRecFilterBox",
