@@ -3,9 +3,12 @@
       <div class="body">
         <div class="container">
           <div class="left">
-            <div class="imgBox">
-              <img :src="tempData.imgUrl" width="340px">
-              <span v-show="!tempData.imgUrl">暂无封面</span>
+            <!--<div class="imgBox">-->
+              <!--<img :src="tempData.imgUrl" width="340px">-->
+              <!--<span v-show="!tempData.imgUrl">暂无封面</span>-->
+            <!--</div>-->
+            <div class="img_box">
+              <div class="img" :style="tempData.imgUrl ? `background-image: url('${preUrl + tempData.imgUrl}')` : ''"></div>
             </div>
           </div>
           <div class="right">
@@ -168,8 +171,9 @@
     float: left;
     padding: 10px;
   }
-  .left .imgBox{
+  .left .img{
     height: 470px;
+    width: 338px;
     display: table-cell;
     vertical-align: middle;
   }
@@ -202,7 +206,7 @@
   }
   .right .item .valClass{
     display: inline-block;
-    width: 275px;
+    width: 250px;
   }
   .right .status1, .status2, .status3{
     padding: 1px 10px;
