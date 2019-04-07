@@ -172,9 +172,6 @@
       isVisible(){
         if(this.isVisible){
           this.getCashDetail();
-          // this.getDesData();
-          // this.getCashRecList();
-          // this.getCashTempList();
         }
 
       }
