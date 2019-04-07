@@ -7,7 +7,7 @@
       </div>
       <div class="container">
         <div class="chose">
-          <el-checkbox-group v-model="reasons" @change="putReason">
+          <el-checkbox-group v-model="reasons" @change="setReason">
             <div class="item"><el-checkbox label="缺少封面" name="reasons"></el-checkbox></div>
             <div class="item"><el-checkbox label="封面不符合主题" name="reasons"></el-checkbox></div>
             <div class="item"><el-checkbox label="标题或内容含敏感词汇" name="reasons"></el-checkbox></div>
@@ -33,29 +33,66 @@
 <script>
     export default {
       name: "ShowRefuseReason",
-      props: ['isVisible'],
+      props: ['isVisible', 'aid'],
       data: function () {
         return{
           reason: '',
           reasons: [],
+          isRefuse: false
         }
       },
       methods: {
         closeReasonBox: function () {
-          this.$emit("closeReasonBox")
+          this.$emit("closeReasonBox", this.isRefuse);
+          this.isRefuse = false;
         },
         submitReason: function () {
-          console.log(this.reasons);
-          console.log(this.reason);
+        //  doDesignerAudit
+          if(this.reason === '') {
+            this.$message.warning("请填写打回原因");
+            return;
+          }
+          this.$confirm('确定打回该设计师？打回后将不可撤销！请确认', '提示', {
+            confirmButtonText: '打回',
+            confirmButtonClass: 'el-button--danger el-button--medium',
+            cancelButtonText: '取消',
+            cancelButtonClass: 'el-button--medium',
+            type: 'warning',
+            center: true,
+            distinguishCancelAndClose: true
+          }).then((action) => {
+            this.doRefuse();
+          }).catch(action => {});
+          
         },
-        putReason: function () {
+        // 打回ajax
+        doRefuse: function(){
+          let that = this;
+          $.ajax({
+            url: that.preUrl + '/doDesignerAudit/back',
+            type: 'get',
+            data: {
+              aid: that.aid,
+              reason: that.reason,
+            },
+            success : function (res) {
+              if(res.success){
+                that.$message.success(res.msg);
+                that.isRefuse = true;
+                that.closeReasonBox();
+              }else{
+                that.$message.error(res.msg);
+              }
+            },
+            error: function (res) {
+              that.$message.error("网络繁忙，请刷新后重试");
+            }
+          });
+        },
+
+        setReason: function () {
           this.reason = String(this.reasons) + ",";
-          // this.reason = this.reasons;
-          // console.log(this.reasons);
-          // for(let i in this.reasons){
-          //   this.reason += this.reasons[i];
-          //   this.reason += ';'
-          // }
+          this.reason = this.reason.slice(0,this.reason.length-1);
         }
       }
     }

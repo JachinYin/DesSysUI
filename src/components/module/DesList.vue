@@ -40,6 +40,7 @@
       :is-visible="isDetailVisible"
       :desData="desData"
       @closeDetailBox="closeDetailBox"
+      @refresh="refreshDesList"
     />
 
     <!--打开筛选-->

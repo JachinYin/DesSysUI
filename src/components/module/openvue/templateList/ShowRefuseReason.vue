@@ -7,7 +7,7 @@
       </div>
       <div class="container">
         <div class="chose">
-          <el-checkbox-group v-model="reasons" @change="putReason">
+          <el-checkbox-group v-model="reasons" @change="setReason">
             <div class="item"><el-checkbox label="缺少封面或封面不符合主题" name="reasons"></el-checkbox></div>
             <div class="item"><el-checkbox label="模板内出现明星肖像" name="reasons"></el-checkbox></div>
             <div class="item"><el-checkbox label="标题或内容存在违规词，违反广告法" name="reasons"></el-checkbox></div>
@@ -43,7 +43,8 @@
       },
       methods: {
         closeReasonBox: function () {
-          this.$emit("closeReasonBox", this.isRefuse)
+          this.$emit("closeReasonBox", this.isRefuse);
+          this.isRefuse = false;
         },
         submitReason: function () {
           if(this.reason === '') {
@@ -73,7 +74,6 @@
                   thiz.$message.success(res.msg);
                   thiz.isRefuse = true;
                   thiz.closeReasonBox();
-                  thiz.isRefuse = false;
                 }else{
                   thiz.$message.error(res.msg);
                 }
@@ -85,7 +85,7 @@
 
           }).catch(action => {});
         },
-        putReason: function () {
+        setReason: function () {
           this.reason = String(this.reasons) + ",";
         }
       }

@@ -4,7 +4,10 @@
         <div class="container">
           <div class="left">
             <div class="info1">
-              <img :src="desData.photoImg" width="62px" @click="showPic(desData.photoImg)">
+              <!--<img :src="desData.photoImg" width="62px" @click="showPic(desData.photoImg)">-->
+              <div class="img_box imgPhoto" @click="showPic(desData.photoImg)">
+                <div class="img" :style="desData.photoImg ? `background-image: url('${preUrl + desData.photoImg}')` : ''"></div>
+              </div>
               <div class="item">
                 <span class="keyClass">昵称：</span> <span class="valClass">{{desData.nickName}}</span>
               </div>
@@ -55,21 +58,27 @@
             </div>
           </div>
           <div class="right">
-            <div class="imgBox">
-              <img :src="desData.frontImg" width="320px" @click="showPic(desData.frontImg)">
-              <span v-show="!desData.frontImg">暂无身份证正面照</span>
-            </div>
-            <br>
-            <div class="imgBox">
-              <img :src="desData.reverseImg" width="320px" @click="showPic(desData.reverseImg)">
-              <span v-show="!desData.reverseImg">暂无身份证反面照</span>
+            <div class="center_box">
+              <div class="img_box" @click="showPic(desData.frontImg)">
+                <div class="img" :style="desData.frontImg ? `background-image: url('${preUrl + desData.frontImg}')` : ''"></div>
+              </div>
+              <span>身份证正面照</span>
+              <!--<img :src="desData.frontImg" width="320px" @click="showPic(desData.frontImg)">-->
+              <!--<span v-show="!desData.frontImg">暂无身份证正面照</span>-->
+              <br><br>
+              <div class="img_box" @click="showPic(desData.reverseImg)">
+                <div class="img" :style="desData.reverseImg ? `background-image: url('${preUrl + desData.reverseImg}')` : ''"></div>
+              </div>
+              <span>身份证反面照</span>
+              <!--<img :src="desData.reverseImg" width="320px" @click="showPic(desData.reverseImg)">-->
+              <!--<span v-show="!desData.reverseImg">暂无身份证反面照</span>-->
             </div>
           </div>
 
           <div class="bottom">
             <!--这里放审核记录表-->
             <!--<div class="tableTitle">审核记录表</div>-->
-            <el-table :data="desData.list" class="table" tooltip-effect="light" height="200px">
+            <el-table :data="desData.list" class="table" tooltip-effect="light" height="260px">
               <el-table-column align="center" label="审核状态" prop="status" width="80px">
                 <template slot-scope="scope">
                   <span v-if="scope.row.status === 1">审核中</span>
@@ -95,7 +104,7 @@
         </div>
       </div>
       <div class="mask" @click="closeDetailBox"></div>
-      <ShowRefuseReason :is-visible="isReasonVisible" @closeReasonBox="closeReasonBox"/>
+      <ShowRefuseReason :is-visible="isReasonVisible" :aid="desData.aid" @closeReasonBox="closeReasonBox"/>
 
       <!--查看原图-->
       <div class="openOriPic openHtml" v-if="isShowPic">
@@ -109,7 +118,7 @@
 </template>
 
 <script>
-    import ShowRefuseReason from "@/components/module/openvue/designerList/ShowRefuseReason";
+    import ShowRefuseReason from "../designerList/ShowRefuseReason";
     export default {
       name: "ShowDesFilterBox",
       components: {ShowRefuseReason},
@@ -130,62 +139,59 @@
           // this.isVisible = !this.isVisible;
           this.$emit("closeDetailBox");
         },
-        closeReasonBox: function () {
+        closeReasonBox: function (isRefuse) {
           this.isReasonVisible = false;
+          if(isRefuse){
+            this.$emit("closeDetailBox");
+            this.$emit("refresh");
+          }
         },
         pass: function () {
-          console.log("pass");
-          let thiz = this;
-            // $.ajax({
-            //   url: thiz.preUrl + 'tempPass',
-            //   type: 'get',
-            //   data: {
-            //     price: value,
-            //     tempId: thiz.tempData.tempId,
-            //   },
-            //   success : function (res) {
-            //     if(res.success){
-            //       thiz.$message.success(res.msg);
-            //       thiz.$emit("refresh");
-            //       thiz.closeDetailBox();
-            //     }else{
-            //       thiz.$message.error(res.msg);
-            //     }
-            //   },
-            //   error: function (res) {
-            //     this.$message.error("网络繁忙，请刷新后重试");
-            //   }
-            // });
-
+          this.$confirm('确定通过该设计师？', '提示', {
+            confirmButtonText: '确定',
+            confirmButtonClass: 'el-button--primary el-button--medium',
+            cancelButtonText: '取消',
+            cancelButtonClass: 'el-button--medium',
+            type: 'success',
+            center: true,
+            distinguishCancelAndClose: true
+          }).then((action) => {
+            this.doPass();
+          }).catch(() => {});
         },
+        doPass: function(){
+          let that = this;
+          $.ajax({
+            url: that.preUrl + '/doDesignerAudit/pass',
+            type: 'get',
+            data: {
+              aid: that.desData.aid,
+            },
+            success : function (res) {
+              if(res.success){
+                that.$message.success(res.msg);
+                that.closeDetailBox();
+                that.$emit("refresh");
+              }else{
+                that.$message.error(res.msg);
+              }
+            },
+            error: function (res) {
+              that.$message.error("网络繁忙，请刷新后重试");
+            }
+          });
+        },
+
+
         refuse: function () {
           this.isReasonVisible = true;
-          return;
-          let thiz = this;
-          // $.ajax({
-          //   url: thiz.preUrl + 'tempRefuse',
-          //   type: 'get',
-          //   data: {
-          //     tempId: thiz.tempData.tempId,
-          //   },
-          //   success : function (res) {
-          //     if(res.success){
-          //       thiz.$message.success(res.msg);
-          //       thiz.$emit("refresh");
-          //       thiz.closeDetailBox();
-          //     }else{
-          //       thiz.$message.error(res.msg);
-          //     }
-          //   },
-          //   error: function (res) {
-          //     this.$message.error("网络繁忙，请刷新后重试");
-          //   }
-          // })
         },
 
         showPic:function (url) {
-          this.isShowPic = true;
-          this.srcPic = url;
+          if(url) {
+            this.srcPic = this.preUrl + url;
+            this.isShowPic = true;
+          }
         }
       },
     }
@@ -222,22 +228,30 @@
   .right{
     background: #f9f9f9;
     border-radius: 8px;
-    width: 340px;
+    width: 333px;
     height: 470px;
     float: right;
     padding: 10px;
+    position: relative;
   }
-  .right .imgBox{
-    margin-top: 22px;
-    height: 205px;
+  .center_box{
+    width: 333px;
+    height: 85%;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+  }
+  .right .img{
+    /*margin-top: 22px;*/
+    height: 180px;
+    width: 320px;
   }
   .right img:hover{
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
   }
-  .right .imgBox span{
-    color: #fd8a71;
-  }
-
 
   .left{
     /*background: #f2f2f2;*/
@@ -272,7 +286,9 @@
     width: 265px;
   }
 
-  .left .info1 img{
+  .left .info1 .img{
+    width: 62px;
+    height: 62px;
     position: relative;
     float: left;
     left: 20px;
@@ -283,7 +299,7 @@
   }
 
   .left .info1 .item .valClass{
-    width: 175px;
+    width: 160px;
   }
 
   .left .status1, .status2, .status3{
