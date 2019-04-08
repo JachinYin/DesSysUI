@@ -30,7 +30,7 @@
               url: '/tempList'
             },
             {
-              name: '协议管理',
+              name: '认证管理',
               flag: '',
               url: '/desList'
             },

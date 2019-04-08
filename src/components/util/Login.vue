@@ -60,7 +60,7 @@
 
           let thiz = this;
           $.ajax({
-            url: thiz.preUrl + '/login',
+            url: thiz.preUrl + '/authLogin',
             data: {
               userName: thiz.form.name,
               password: thiz.form.password,
