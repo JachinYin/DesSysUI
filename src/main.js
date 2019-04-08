@@ -4,7 +4,7 @@
 // 根级路径下的 js，对应着index.html 中的 app
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import router from './api/router'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
@@ -14,15 +14,15 @@ import './api/icon/iconfont'
 import IconSvg from "./components/comm/IconSvg"
 Vue.component('icon', IconSvg); // 全局注册图标组件
 
-import cookieUtil from "./api/comm/CommJs";
-Vue.prototype.$cookieUtil = cookieUtil;
+import CommUtil from "./api/comm/CommJs";
+Vue.prototype.$CommUtil = CommUtil;
 
 
 Vue.config.productionTip = false;
 
 // 定义VUE全局变量
 Vue.prototype.preUrl = "http://localhost:8088";
-Vue.prototype.reg_Price = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+Vue.prototype.reg_Price = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/; // 采购价正则
 
 new Vue({
   el: '#app',
@@ -33,7 +33,7 @@ new Vue({
 
 router.beforeEach((to, from, next) => {
   if (!to.meta.requireAuth) {  // 判断该路由是否需要登录权限
-    if (cookieUtil.getCookie("TOKEN")) {  // 获取当前的token是否存在
+    if (CommUtil.getToken("TOKEN")) {  // 获取当前的token是否存在
       next(); //  存在Cookie则继续
     }
     else { // 否则跳转登陆
@@ -54,21 +54,19 @@ router.beforeEach((to, from, next) => {
 $.ajaxSetup({
   dataType: "json",
   cache: false,
-  // headers: {
-  //   TOKEN: cookieUtil.getCookie("TOKEN")
-  // },
   beforeSend(xhr){
-    // console.log("设置TOKEN");
-    xhr.setRequestHeader("TOKEN", cookieUtil.getCookie("TOKEN"));
+    xhr.setRequestHeader("TOKEN", CommUtil.getToken("TOKEN"));
   },
   xhrFields: {
     withCredentials: true
   },
   crossDomain: true,
   complete: function(xhr) {
+    console.log(xhr);
     //token过期，则跳转到登录页面
-    if(xhr.code === 101){
-      parent.location.href = '/login';
+    if(xhr.responseJSON.code === 101){
+      console.log("登陆过期，请重新登陆");
+      Vue.$router.push('/login');
     }
   }
 });

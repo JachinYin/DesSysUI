@@ -11,6 +11,15 @@ function getCookie(cookieName) {
   return "";
 }
 
+function getToken(name) {
+  let storage = window.sessionStorage;
+  return storage[name];
+}
+function setToken(token) {
+  window.sessionStorage["TOKEN"]=token;
+}
+
 export default {
-  getCookie,
+  setToken,
+  getToken,
 };

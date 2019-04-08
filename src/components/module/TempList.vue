@@ -117,7 +117,7 @@
             distinct: true,
           },
           beforeSend(xhr){
-            xhr.setRequestHeader("TOKEN", thiz.$cookieUtil.getCookie("TOKEN"));
+            xhr.setRequestHeader("TOKEN", thiz.$CommUtil.getToken("TOKEN"));
           },
           success: function (res) {
             if (res.success) {
@@ -126,15 +126,22 @@
               thiz.page.total = thiz.templateList.length;
               thiz.isLoad = false;
             } else {
-              if (res.code === 101){
-                thiz.$router.push('/login');
-                return;
-              }
+              // if (res.code === 101){
+              //   thiz.$router.push('/login');
+              //   return;
+              // }
               thiz.$message.error(res.msg);
             }
           },
           error: function (data) {
             thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
+          },
+          complete: function(xhr) {
+            //token过期，则跳转到登录页面
+            if(xhr.responseJSON.code === 101){
+              console.log("登陆过期，请重新登陆");
+              thiz.$router.push('/login');
+            }
           }
         });
       },

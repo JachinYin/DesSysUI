@@ -67,9 +67,11 @@
             },
             type: 'post',
             success: function (res) {
+              thiz.$CommUtil.setToken(res.data.TOKEN);
               // 成功登陆
               if (res.success) {
-                thiz.$router.push("/tempList");
+                let url = thiz.$route.query.redirect || '/tempList';
+                thiz.$router.push(url);
               }
               // 登陆失败
               else {
