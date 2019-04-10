@@ -4,19 +4,26 @@
       <div class="filter" @click="back"><span style="padding-left: 58px">返回</span></div>
       <div class="search">
         <div style="display: inline-block">
+          调整年份
           <i class="el-icon-remove-outline" @click="changeDate('year', -1)"></i>
-          <span>{{form.year}}</span>
+          <span style="color: black">{{form.year}}</span>
           <!--<span @click="isShowYear=!isShowYear" v-if="!isShowYear">{{form.year}}</span>-->
           <!--<el-input v-model="form.year" style="width: 60px" size="mini" v-if="isShowYear" @change="isShowYear=!isShowYear"></el-input>-->
           <i class="el-icon-circle-plus-outline" @click="changeDate('year', 1)"></i>
         </div>
+        -
         <div style="display: inline-block">
-          <i class="el-icon-caret-left" @click="changeDate('month', -1)"></i>
-          <el-input v-model="form.month" style="width: 50px" size="mini"></el-input>
-          <i class="el-icon-caret-right" @click="changeDate('month', 1)"></i>
+          调整月份
+          <i class="el-icon-remove-outline" @click="changeDate('month', -1)"></i>
+          <span style="color: black">{{form.month}}</span>
+          <!--<span @click="isShowYear=!isShowYear" v-if="!isShowYear">{{form.year}}</span>-->
+          <!--<el-input v-model="form.year" style="width: 60px" size="mini" v-if="isShowYear" @change="isShowYear=!isShowYear"></el-input>-->
+          <i class="el-icon-circle-plus-outline" @click="changeDate('month', 1)"></i>
         </div>
       </div>
-      <div class="export"></div>
+      <div class="export">
+        <span><icon i-class="export"></icon>导出</span>
+      </div>
     </div>
     <div class="table">
       <p>{{form.year}}年{{form.month}}月提现统计</p>
@@ -137,6 +144,16 @@
   .export{
     flex: 1;
     display: inline-block;
+    box-sizing: border-box;
+  }
+  .export span{
+    cursor: pointer;
+    padding-right: 58px;
+    float: right;
+    line-height: 50px;
+  }
+  .export span:hover{
+    color: #5daf34;
   }
 
   .table p {
