@@ -5,6 +5,7 @@ import Error from '@/components/Error'
 import TempList from '@/components/module/TempList'
 import DesList from '@/components/module/DesList'
 import CashRecList from '@/components/module/CashRecList'
+import StatisticList from "@/components/module/StatisticList";
 import CashDesList from '@/components/module/CashDesList'
 import Login from '@/components/util/Login';
 import Register from '@/components/util/Register';
@@ -32,6 +33,11 @@ export default new Router({
           path: '/cashRecList',
           name: 'CashRecList',
           component: CashRecList
+        },
+        {
+          path: '/statisticList',
+          name: 'StatisticList',
+          component: StatisticList
         },
         {
           path: '/cashDesList',

@@ -62,7 +62,6 @@ $.ajaxSetup({
   },
   crossDomain: true,
   complete: function(xhr) {
-    console.log(xhr);
     //token过期，则跳转到登录页面
     if(xhr.responseJSON.code === 101){
       console.log("登陆过期，请重新登陆");

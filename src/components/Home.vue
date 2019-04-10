@@ -44,7 +44,7 @@
   }
 
   .head-box{
-    text-align: center;
+    text-align: left;
     height: 50px;
     border-radius: 15px 15px 0 0 ;
     background-color: white;
@@ -53,8 +53,8 @@
   }
   .head-box .filter, .static{
     position: relative;
-    top: 12px;
-    margin-right: 12px;
+    line-height: 50px;
+    margin-left: 58px;
     cursor: pointer;
   }
   .head-box .filter:hover{
