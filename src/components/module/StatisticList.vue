@@ -28,11 +28,13 @@
     <div class="table">
       <p>{{form.year}}年{{form.month}}月提现统计</p>
       <el-table :data="cashStatisticList.slice(index,size)" border :height="572" tooltip-effect="light">
-        <el-table-column align="center" label="提现时间" prop="time" width="200px"></el-table-column>
-        <el-table-column align="center" label="AID" prop="aid" width="280px"></el-table-column>
-        <el-table-column align="center" label="设计师名称" prop="nickName" width="200px"></el-table-column>
-        <el-table-column align="center" label="本次提现金额" prop="price" width="200px"></el-table-column>
-        <el-table-column align="center" label="剩余可提现金额" prop="balance" width="200px"></el-table-column>
+        <el-table-column align="center" label="AID" prop="aid" width="100px"></el-table-column>
+        <el-table-column align="center" label="真实姓名" prop="realName" width="100px"></el-table-column>
+        <el-table-column align="center" label="联系手机" prop="phone" width="150px"></el-table-column>
+        <el-table-column align="center" label="持卡人" prop="cardHolder" width="100px"></el-table-column>
+        <el-table-column align="center" label="开户行" prop="openBank" width="250px"></el-table-column>
+        <el-table-column align="center" label="银行卡账号" prop="bankAcct" width="250px"></el-table-column>
+        <el-table-column align="center" label="提现总额" prop="price" width="148px"></el-table-column>
       </el-table>
     </div>
     <div class="pageNav">
@@ -84,15 +86,15 @@
         refreshTabData: function () {
           let thiz = this;
           $.ajax({
-            url: thiz.preUrl + "/getCashFlowShowList",
+            url: thiz.preUrl + "/getTotalWithdraw",
             data: {
-              begTime: thiz.form.begTime,
-              endTime: thiz.form.endTime,
+              year: thiz.form.year,
+              month: thiz.form.month,
             },
             success: function (res) {
               if (res.success) {
                 let data = res.data;
-                thiz.cashStatisticList = data.list;
+                thiz.cashStatisticList = data.totalList;
                 thiz.page.total = thiz.cashStatisticList.length;
                 thiz.isLoad = false;
               } else {
@@ -108,8 +110,7 @@
       created() {
         let date = new Date();
         this.form.year = date.getFullYear();
-        this.form.month = date.getMonth();
-        console.log(this.form);
+        this.form.month = date.getMonth() + 1;
         this.refreshTabData();
       }
     }
@@ -162,6 +163,6 @@
     background: white;
     margin: 0;
     padding: 8px 0;
-    border-top: 1px #f2f2f2 solid;
+    border-top: 1px #eaeaea solid;
   }
 </style>
