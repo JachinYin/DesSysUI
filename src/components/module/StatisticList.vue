@@ -1,7 +1,12 @@
 <template>
   <div content="statisticList">
     <div class="head-box">
-      <div class="filter" @click="back"><span style="padding-left: 58px">返回</span></div>
+      <div class="filter" @click="back">
+        <span style="padding-left: 58px">
+        <icon i-class="back"></icon>
+          返回
+        </span>
+      </div>
       <div class="search">
         <div style="display: inline-block">
           调整年份
@@ -22,12 +27,12 @@
         </div>
       </div>
       <div class="export">
-        <span><icon i-class="export"></icon>导出</span>
+        <span @click="onExport"><icon i-class="export"></icon>导出</span>
       </div>
     </div>
     <div class="table">
       <p>{{form.year}}年{{form.month}}月提现统计</p>
-      <el-table :data="cashStatisticList.slice(index,size)" border :height="572" tooltip-effect="light">
+      <el-table :data="cashStatisticList.slice(index,size)" border :height="572" tooltip-effect="light" id="out-table">
         <el-table-column align="center" label="AID" prop="aid" width="100px"></el-table-column>
         <el-table-column align="center" label="真实姓名" prop="realName" width="100px"></el-table-column>
         <el-table-column align="center" label="联系手机" prop="phone" width="150px"></el-table-column>
@@ -53,6 +58,11 @@
 
 <script>
     import {Pagination_Mixins2} from "@/api/comm/mixins";
+
+    // 引入导出Excel表格依赖
+    import FileSaver from "file-saver";
+    import XLSX from "xlsx";
+
 
     export default {
       name: "StatisticList",
@@ -84,28 +94,53 @@
         },
 
         refreshTabData: function () {
-          let thiz = this;
+          let that = this;
           $.ajax({
-            url: thiz.preUrl + "/getTotalWithdraw",
+            url: that.preUrl + "/getTotalWithdraw",
             data: {
-              year: thiz.form.year,
-              month: thiz.form.month,
+              year: that.form.year,
+              month: that.form.month,
             },
             success: function (res) {
               if (res.success) {
                 let data = res.data;
-                thiz.cashStatisticList = data.totalList;
-                thiz.page.total = thiz.cashStatisticList.length;
-                thiz.isLoad = false;
+                that.cashStatisticList = data.totalList;
+                that.page.total = that.cashStatisticList.length;
+                that.isLoad = false;
               } else {
-                thiz.$message.error(res.msg);
+                that.$message.error(res.msg);
               }
             },
             error: function (data) {
-              thiz.$message.error("网络繁忙，请稍后重试~");
+              that.$message.error("网络繁忙，请稍后重试~");
             }
           });
         },
+
+        onExport: function () {
+          /* 从表生成工作簿对象 */
+          let wb = XLSX.utils.table_to_book(document.querySelector("#out-table"));
+          /* 获取二进制字符串作为输出 */
+          let wbout = XLSX.write(wb, {
+            bookType: "xlsx",
+            bookSST: true,
+            type: "array"
+          });
+          try {
+            FileSaver.saveAs(
+              //Blob 对象表示一个不可变、原始数据的类文件对象。
+              //Blob 表示的不一定是JavaScript原生格式的数据。
+              //File 接口基于Blob，继承了 blob 的功能并将其扩展使其支持用户系统上的文件。
+              //返回一个新创建的 Blob 对象，其内容由参数中给定的数组串联组成。
+              new Blob([wbout], { type: "application/octet-stream" }),
+              //设置导出文件名称
+              "财务打款表.xlsx"
+            );
+          } catch (e) {
+            if (typeof console !== "undefined") console.log(e, wbout);
+          }
+          return wbout;
+        }
       },
       created() {
         let date = new Date();
