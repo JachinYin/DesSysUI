@@ -3,7 +3,7 @@
 
     <div class="head-box">
       <span class="filter" @click="showFilter()">筛选</span>
-      <span class="static">统计数据</span>
+      <!--<span class="static">统计数据</span>-->
     </div>
 
     <div class="table">
@@ -92,10 +92,6 @@
                 thiz.page.total = thiz.cashDesList.length;
                 thiz.isLoad = false;
               } else {
-                if (res.code === 101){
-                  thiz.$router.push('/login');
-                  return;
-                }
                 thiz.$message.error(res.msg);
               }
             },

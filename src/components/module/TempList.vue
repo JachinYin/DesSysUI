@@ -4,8 +4,9 @@
       <span class="filter" @click="showFilter()">
         <icon i-class="filter"></icon>
         筛选
+        <span v-if="form.size>0">-</span>
       </span>
-      <span class="static">统计数据</span>
+      <!--<span class="static">统计数据</span>-->
     </div>
     <div class="table">
       <el-table :data="templateList.slice(index, size)" border :height="609" tooltip-effect="light">

@@ -2,7 +2,7 @@
   <div class="desList">
     <div class="head-box">
       <span class="filter" @click="showFilter()">筛选</span>
-      <span class="static">统计数据</span>
+      <!--<span class="static">统计数据</span>-->
     </div>
     <div class="table">
       <el-table :data="desList.slice(index, size)" border :height="609" tooltip-effect="light">
@@ -128,10 +128,6 @@
               thiz.page.total = thiz.desList.length;
               thiz.isLoad = false;
             }else{
-              if (res.code === 101){
-                thiz.$router.push('/login');
-                return;
-              }
               thiz.$message.error(res.msg);
 
             }
