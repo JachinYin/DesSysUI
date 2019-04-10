@@ -1,8 +1,14 @@
 <template>
   <div class="cashRecList">
     <div class="head-box">
-      <span class="filter" @click="showFilter()">筛选</span>
-      <span class="static" @click="goStatistic">统计数据</span>
+      <span class="filter" @click="showFilter()">
+        <icon i-class="filter"></icon>
+        筛选
+      </span>
+      <span class="static" @click="goStatistic" style="float: right;margin-right: 58px">
+        <icon i-class="balance"></icon>
+        统计数据
+      </span>
     </div>
     <div class="table">
       <el-table :data="cashRecList.slice(index,size)" border :height="609" tooltip-effect="light">
