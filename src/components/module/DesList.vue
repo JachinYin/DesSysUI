@@ -12,7 +12,7 @@
         <el-table-column align="center" label="AID" prop="aid" width="200px"></el-table-column>
         <el-table-column align="center" label="设计师名称" prop="nickName" width="300px"
                          show-overflow-tooltip></el-table-column>
-        <el-table-column align="center" label="提交时间" prop="time" width="250px"></el-table-column>
+        <el-table-column align="center" label="审核时间" prop="time" width="250px"></el-table-column>
         <el-table-column align="center" label="审核状态" prop="status" width="200px">
           <template slot-scope="scope">
             <span v-if="scope.row.status === 1">待审核</span>
