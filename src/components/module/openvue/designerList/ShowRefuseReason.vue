@@ -8,13 +8,13 @@
       <div class="container">
         <div class="chose">
           <el-checkbox-group v-model="reasons" @change="setReason">
-            <div class="item"><el-checkbox label="缺少封面" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="封面不符合主题" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="标题或内容含敏感词汇" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="关键词填写有误" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="行业信息不对" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="内容过长" name="reasons"></el-checkbox></div>
-            <div class="item"><el-checkbox label="主题不明显" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="很抱歉，您不符合本设计平台收录标准，无法通过审核，请谅解，再次感谢您的提交" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="为保证用户更好的了解设计师经历及提高对平台的信任感，请描述设计师个人简介" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="您的个人信息/实名验证信息有误，请再次检查后重新提交审核" name="reasons"></el-checkbox></div>
+            <div class="item"><el-checkbox label="其他原因" name="reasons"></el-checkbox></div>
+            <!--<div class="item"><el-checkbox label="行业信息不对" name="reasons"></el-checkbox></div>-->
+            <!--<div class="item"><el-checkbox label="内容过长" name="reasons"></el-checkbox></div>-->
+            <!--<div class="item"><el-checkbox label="主题不明显" name="reasons"></el-checkbox></div>-->
           </el-checkbox-group>
         </div>
         <div class="input">
@@ -63,7 +63,7 @@
           }).then((action) => {
             this.doRefuse();
           }).catch(action => {});
-          
+
         },
         // 打回ajax
         doRefuse: function(){
@@ -105,8 +105,8 @@
   }
   .body{
     z-index: 1002;
-    height: 440px;
-    /*width: 440px;*/
+    height: 360px;
+    width: 580px;
     padding: 20px;
     margin-top: 3%;
   }

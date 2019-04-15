@@ -34,12 +34,13 @@
 </style>
 <style>
   .el-table th{
+    padding: 8px 0!important;
     border-right: none;
     font-weight: normal;
     color: #676e6e;
   }
   .el-table td{
-    padding: 8px 0;
+    padding: 8px 0!important;
     color: #909399;
   }
 
