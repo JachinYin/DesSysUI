@@ -84,26 +84,26 @@
         },
 
         refreshTabData: function () {
-          let thiz = this;
+          let that = this;
           $.ajax({
-            url: thiz.preUrl + "/getCashFlowShowList",
+            url: that.preUrl + "/getCashFlowShowList",
             data: {
-              aid: thiz.form.aid || 0,
-              begTime: thiz.form.begTime,
-              endTime: thiz.form.endTime,
+              aid: that.form.aid || 0,
+              begTime: that.form.begTime,
+              endTime: that.form.endTime,
             },
             success: function (res) {
               if (res.success) {
                 let data = res.data;
-                thiz.cashRecList = data.list;
-                thiz.page.total = thiz.cashRecList.length;
-                thiz.isLoad = false;
+                that.cashRecList = data.list;
+                that.page.total = that.cashRecList.length;
+                that.isLoad = false;
               } else {
-                thiz.$message.error(res.msg);
+                that.$message.error(res.msg);
               }
             },
             error: function (data) {
-              thiz.$message.error("网络繁忙，请稍后重试~");
+              that.$message.error("网络繁忙，请稍后重试~");
             }
           });
         },

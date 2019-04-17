@@ -80,22 +80,20 @@
       },
 
       showDetail: function (index) {
-        console.log(index);
-        let thiz = this;
-        let tempId = thiz.templateList[index].tempId;
+        let that = this;
+        let tempId = that.templateList[index].tempId;
         $.ajax({
-          url: thiz.preUrl + "/getAuditShowData",
+          url: that.preUrl + "/getAuditShowData",
           data: {
             tempId: tempId,
           },
           type: 'get',
           success: function (res) {
-            console.log(res);
-            thiz.tempData = res.data;
-            thiz.isDetailVisible = true;
+            that.tempData = res.data;
+            that.isDetailVisible = true;
           },
           error: function (res) {
-            console.log(res);
+            that.$message.error("网络繁忙，请稍后重试~");
           }
         });
 
@@ -105,43 +103,43 @@
       },
 
       refreshTabData: function () {
-        let thiz = this;
+        let that = this;
         $.ajax({
-          url: thiz.preUrl + "/getTemplateAuditList",
+          url: that.preUrl + "/getTemplateAuditList",
           data: {
-            designer: thiz.form.nickName,
-            title: thiz.form.title,
-            status: thiz.form.status || 0,
-            tempId: thiz.form.tempId || 0,
-            begTime: thiz.form.begTime,
-            endTime: thiz.form.endTime,
+            designer: that.form.nickName,
+            title: that.form.title,
+            status: that.form.status || 0,
+            tempId: that.form.tempId || 0,
+            begTime: that.form.begTime,
+            endTime: that.form.endTime,
             distinct: true,
           },
           beforeSend(xhr){
-            xhr.setRequestHeader("TOKEN", thiz.$CommUtil.getToken("TOKEN"));
+            xhr.setRequestHeader("TOKEN", that.$CommUtil.getToken("TOKEN"));
           },
           success: function (res) {
             if (res.success) {
               let data = res.data;
-              thiz.templateList = data.list;
-              thiz.page.total = thiz.templateList.length;
-              thiz.isLoad = false;
+              that.templateList = data.list;
+              that.page.total = that.templateList.length;
+              that.isLoad = false;
             } else {
               // if (res.code === 101){
-              //   thiz.$router.push('/login');
+              //   that.$router.push('/login');
               //   return;
               // }
-              thiz.$message.error(res.msg);
+              that.$message.error(res.msg);
             }
           },
           error: function (data) {
-            thiz.$message.error('【模板审核表】服务繁忙，请稍后重试');
+            that.$message.error('【模板审核表】服务繁忙，请稍后重试');
           },
           complete: function(xhr) {
             //token过期，则跳转到登录页面
             if(xhr.responseJSON.code === 101){
               console.log("登陆过期，请重新登陆");
-              thiz.$router.push('/login');
+              that.$router.push('/login');
             }
           }
         });

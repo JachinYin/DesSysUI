@@ -2,7 +2,7 @@
   <div class="具体弹窗名字 openHtml" v-if="isVisible">
     <div class="body">
       <div class="header">
-        <span style="color:#2b89fb;">▌</span>打回原因
+        <span style="color:#fb241f;">▌</span>打回原因
         <hr>
       </div>
       <div class="container">
@@ -51,7 +51,7 @@
             this.$message.warning("请填写打回原因");
             return;
           }
-          let thiz = this;
+          let that = this;
           this.$confirm('确定打回该作品？打回后将不可撤销！请确认', '提示', {
             confirmButtonText: '打回',
             confirmButtonClass: 'el-button--danger el-button--medium',
@@ -63,23 +63,23 @@
           }).then((action) => {
 
             $.ajax({
-              url: thiz.preUrl + '/doTemplateAudit/back',
+              url: that.preUrl + '/doTemplateAudit/back',
               type: 'get',
               data: {
-                tempId: thiz.tempId,
-                reason: thiz.reason,
+                tempId: that.tempId,
+                reason: that.reason,
               },
               success : function (res) {
                 if(res.success){
-                  thiz.$message.success(res.msg);
-                  thiz.isRefuse = true;
-                  thiz.closeReasonBox();
+                  that.$message.success(res.msg);
+                  that.isRefuse = true;
+                  that.closeReasonBox();
                 }else{
-                  thiz.$message.error(res.msg);
+                  that.$message.error(res.msg);
                 }
               },
               error: function (res) {
-                thiz.$message.error("网络繁忙，请刷新后重试");
+                that.$message.error("网络繁忙，请刷新后重试");
               }
             });
 
@@ -103,6 +103,7 @@
     /*width: 440px;*/
     padding: 20px;
     margin-top: 3%;
+    overflow-y: auto;
   }
 
   .header{

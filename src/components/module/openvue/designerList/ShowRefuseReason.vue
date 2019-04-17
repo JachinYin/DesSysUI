@@ -2,7 +2,7 @@
   <div class="具体弹窗名字 openHtml" v-if="isVisible">
     <div class="body">
       <div class="header">
-        <span style="color:#2b89fb;">▌</span>打回原因
+        <span style="color:#fb241f;">▌</span>打回原因
         <hr>
       </div>
       <div class="container">
@@ -109,6 +109,7 @@
     width: 580px;
     padding: 20px;
     margin-top: 3%;
+    overflow-y: auto;
   }
 
   .header{

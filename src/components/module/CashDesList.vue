@@ -81,25 +81,25 @@
         },
 
         refreshTabData: function () {
-          let thiz = this;
+          let that = this;
           $.ajax({
-            url: thiz.preUrl + "/getCashDesList",
+            url: that.preUrl + "/getCashDesList",
             data: {
-              nickName: thiz.form.nickName,
-              aid: thiz.form.aid || 0,
+              nickName: that.form.nickName,
+              aid: that.form.aid || 0,
             },
             success: function (res) {
               if (res.success) {
                 let data = res.data;
-                thiz.cashDesList = data.list;
-                thiz.page.total = thiz.cashDesList.length;
-                thiz.isLoad = false;
+                that.cashDesList = data.list;
+                that.page.total = that.cashDesList.length;
+                that.isLoad = false;
               } else {
-                thiz.$message.error(res.msg);
+                that.$message.error(res.msg);
               }
             },
             error: function (data) {
-              thiz.$message.error("网络繁忙，请稍后重试~");
+              that.$message.error("网络繁忙，请稍后重试~");
             }
           });
         }

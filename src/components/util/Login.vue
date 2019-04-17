@@ -38,8 +38,8 @@
       data(){
           return{
             form:{
-              name: 'jachin',
-              password: '123123',
+              name: 'adm',
+              password: '123456',
               rememberMe: false,
             },
             isLoginVisible: false
@@ -47,8 +47,6 @@
       },
       methods:{
         login: function () {
-          // this.$message.success("成功");
-          // console.log(this.form);
           if (this.form.name === '') {
             this.$message.warning("输入用户名");
             return;
@@ -58,28 +56,28 @@
             return;
           }
 
-          let thiz = this;
+          let that = this;
           $.ajax({
-            url: thiz.preUrl + '/authLogin',
+            url: that.preUrl + '/authLogin',
             data: {
-              userName: thiz.form.name,
-              password: thiz.form.password,
+              userName: that.form.name,
+              password: that.form.password,
             },
             type: 'post',
             success: function (res) {
-              thiz.$CommUtil.setToken(res.data.TOKEN);
+              that.$CommUtil.setToken(res.data.TOKEN);
               // 成功登陆
               if (res.success) {
-                let url = thiz.$route.query.redirect || '/tempList';
-                thiz.$router.push(url);
+                let url = that.$route.query.redirect || '/tempList';
+                that.$router.push(url);
               }
               // 登陆失败
               else {
-                thiz.$message.error(res.msg);
+                that.$message.error(res.msg);
               }
             },
             error: function () {
-              thiz.$message.error("网络繁忙，请稍后重试~");
+              that.$message.error("网络繁忙，请稍后重试~");
             }
           })
 

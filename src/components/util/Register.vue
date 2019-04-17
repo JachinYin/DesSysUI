@@ -100,24 +100,24 @@
             this.$message.error("两次密码不一致");
             return;
           }
-          let thiz = this;
+          let that = this;
           $.ajax({
-            url: thiz.preUrl + "/register",
+            url: that.preUrl + "/register",
             data: {
               userName: form.username,
               password: form.password,
             },
             success: function (res) {
               if(res.success){
-                thiz.$message.success("注册成功");
-                thiz.$router.push("/login");
+                that.$message.success("注册成功");
+                that.$router.push("/login");
               }
               else{
-                thiz.$message.error(res.msg);
+                that.$message.error(res.msg);
               }
             },
             error: function () {
-              thiz.$message.error("网络繁忙，请稍后重试~");
+              that.$message.error("网络繁忙，请稍后重试~");
             }
           });
 

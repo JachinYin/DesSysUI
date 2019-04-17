@@ -109,22 +109,22 @@
             inputPattern: this.reg_Price,
             inputErrorMessage: '金额格式不正确'
           }).then(({ value }) => {
-            let thiz = this;
+            let that = this;
             $.ajax({
-              url: thiz.preUrl + '/doTemplateAudit/pass',
+              url: that.preUrl + '/doTemplateAudit/pass',
               type: 'get',
               data: {
-                // aid: thiz.tempData.aid,
+                // aid: that.tempData.aid,
                 price: value,
-                tempId: thiz.tempData.tempId,
+                tempId: that.tempData.tempId,
               },
               success : function (res) {
                 if(res.success){
-                  thiz.$emit("refresh");
-                  thiz.closeDetailBox();
-                  thiz.$message.success(res.msg);
+                  that.$emit("refresh");
+                  that.closeDetailBox();
+                  that.$message.success(res.msg);
                 }else{
-                  thiz.$message.error(res.msg);
+                  that.$message.error(res.msg);
                 }
               },
               error: function (res) {

@@ -86,23 +86,23 @@
 
       // 查看设计师详细信息相关方法
       showInfo: function (index) {
-        let thiz = this;
-        let aid = thiz.desList[index].aid;
+        let that = this;
+        let aid = that.desList[index].aid;
         $.ajax({
-          url: thiz.preUrl + "/getDesigner",
+          url: that.preUrl + "/getDesigner",
           data: {
             aid: aid,
           },
           success: function (res) {
             if(res.success) {
-              thiz.desData = res.data;
-              thiz.isDetailVisible = true;
+              that.desData = res.data;
+              that.isDetailVisible = true;
             }else{
-              thiz.$message.error("服务繁忙，请稍后重试");
+              that.$message.error("服务繁忙，请稍后重试");
             }
           },
           error: function (res) {
-            thiz.$message.error("服务繁忙，请稍后重试");
+            that.$message.error("服务繁忙，请稍后重试");
           }
         });
       },
@@ -113,30 +113,30 @@
 
 
       refreshDesList: function () {
-        let thiz = this;
+        let that = this;
         $.ajax({
-          url: thiz.preUrl + "/getDesignersAuditList",
+          url: that.preUrl + "/getDesignersAuditList",
           data: {
-            aid: thiz.form.aid || 0,
-            status: thiz.form.status,
-            nickName: thiz.form.nickName,
-            begTime: thiz.form.begTime,
-            endTime: thiz.form.endTime,
+            aid: that.form.aid || 0,
+            status: that.form.status,
+            nickName: that.form.nickName,
+            begTime: that.form.begTime,
+            endTime: that.form.endTime,
             distinct: true,
           },
           success:function (res) {
             if(res.success){
               let data = res.data;
-              thiz.desList = data.list;
-              thiz.page.total = thiz.desList.length;
-              thiz.isLoad = false;
+              that.desList = data.list;
+              that.page.total = that.desList.length;
+              that.isLoad = false;
             }else{
-              thiz.$message.error(res.msg);
+              that.$message.error(res.msg);
 
             }
           },
           error: function (data) {
-            thiz.$message.error('【认证审核表】服务繁忙，请稍后重试');
+            that.$message.error('【认证审核表】服务繁忙，请稍后重试');
           }
         });
       },
